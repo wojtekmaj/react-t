@@ -1,0 +1,14 @@
+{
+  "presets": [
+    "@babel/env",
+    "@babel/react"
+  ],
+  "env": {
+    "production-esm": {
+      "presets": [
+        ["@babel/env", { "modules": false }],
+        "@babel/react"
+      ]
+    }
+  }
+}

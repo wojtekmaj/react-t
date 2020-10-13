@@ -1,0 +1,68 @@
+{
+  "name": "@wojtekmaj/react-t",
+  "version": "0.1.0",
+  "description": "Simple translation module for React applications.",
+  "main": "dist/umd/index.js",
+  "module": "dist/esm/index.js",
+  "source": "src/index.js",
+  "scripts": {
+    "build": "yarn build-js-all",
+    "build-js-all": "yarn build-js-esm && yarn build-js-umd",
+    "build-js-esm": "cross-env BABEL_ENV=production-esm babel src -d dist/esm --ignore \"**/*.spec.js,**/*.spec.jsx\"",
+    "build-js-umd": "cross-env BABEL_ENV=production-umd babel src -d dist/umd --ignore \"**/*.spec.js,**/*.spec.jsx\"",
+    "clean": "rimraf dist",
+    "lint": "eslint src/ test/ --ext .jsx,.js",
+    "prepublishOnly": "yarn clean && yarn build",
+    "test": "yarn lint"
+  },
+  "keywords": [
+    "react",
+    "translation",
+    "localization",
+    "l10n",
+    "i18n"
+  ],
+  "author": {
+    "name": "Wojciech Maj",
+    "email": "kontakt@wojtekmaj.pl"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "get-user-locale": "^1.4.0",
+    "lodash.once": "^4.0.0",
+    "prop-types": "^15.6.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.8.0",
+    "@babel/core": "^7.9.0",
+    "@babel/plugin-proposal-class-properties": "^7.8.0",
+    "@babel/preset-env": "^7.9.0",
+    "@babel/preset-react": "^7.9.0",
+    "babel-eslint": "^10.0.0",
+    "cross-env": "^7.0.0",
+    "eslint": "~7.2.0",
+    "eslint-config-airbnb": "^18.2.0",
+    "eslint-plugin-import": "^2.21.2",
+    "eslint-plugin-jsx-a11y": "^6.3.0",
+    "eslint-plugin-react": "^7.20.0",
+    "eslint-plugin-react-hooks": "^4.0.0",
+    "react": "^16.7.0",
+    "react-dom": "^16.7.0",
+    "rimraf": "^3.0.0"
+  },
+  "peerDependencies": {
+    "react": "^16.8.0 || ^17.0.0-0",
+    "react-dom": "^16.8.0 || ^17.0.0-0"
+  },
+  "files": [
+    "LICENSE",
+    "README.md",
+    "dist/",
+    "src/"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wojtekmaj/react-t.git"
+  },
+  "funding": "https://github.com/wojtekmaj/react-t?sponsor=1"
+}
