@@ -18,26 +18,29 @@ function getTranslatedString(string, languageFiles, locale) {
     });
 }
 
+function applyVars(rawString, args) {
+  if (!args) {
+    return rawString;
+  }
+
+  let finalString = rawString;
+  Object.entries(args).forEach((entry) => {
+    const key = entry[0];
+    const value = entry[1];
+    finalString = finalString.replace(`{${key}}`, value);
+  });
+
+  return finalString;
+}
+
 function translate(
   string,
   args,
   languageFiles,
   locale,
 ) {
-  return getTranslatedString(string, languageFiles, locale).then((rawString) => {
-    if (!args) {
-      return rawString;
-    }
-
-    let finalString = rawString;
-    Object.entries(args).forEach((entry) => {
-      const key = entry[0];
-      const value = entry[1];
-      finalString = finalString.replace(`{${key}}`, value);
-    });
-
-    return finalString;
-  });
+  return getTranslatedString(string, languageFiles, locale)
+    .then(translatedString => applyVars(translatedString, args));
 }
 
 export default function useTranslation(string, args = {}) {
@@ -46,7 +49,8 @@ export default function useTranslation(string, args = {}) {
 
   useEffect(() => {
     if (locale === defaultLocale) {
-      setTranslatedString(string);
+      const stringWithArgs = applyVars(string, args);
+      setTranslatedString(stringWithArgs);
     } else {
       translate(string, args, languageFiles, locale).then(setTranslatedString);
     }
