@@ -31,26 +31,20 @@ function applyVars(rawString, args) {
   return finalString;
 }
 
-function translate(
-  string,
-  args,
-  languageFiles,
-  locale,
-) {
-  return getTranslatedString(string, languageFiles, locale)
-    .then(translatedString => applyVars(translatedString, args));
-}
-
 export default function useTranslation(string, args = {}) {
   const { locale, defaultLocale, languageFiles } = useContext(Context);
   const [translatedString, setTranslatedString] = useState(null);
 
   useEffect(() => {
-    if (locale === defaultLocale) {
-      const stringWithArgs = applyVars(string, args);
+    function applyVarsAndSet(str) {
+      const stringWithArgs = applyVars(str, args);
       setTranslatedString(stringWithArgs);
+    }
+
+    if (locale === defaultLocale) {
+      applyVarsAndSet(string);
     } else {
-      translate(string, args, languageFiles, locale).then(setTranslatedString);
+      getTranslatedString(string, languageFiles, locale).then(applyVarsAndSet);
     }
   }, [string, ...Object.values(args), locale]);
 
