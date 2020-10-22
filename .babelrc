@@ -1,12 +1,17 @@
 {
   "presets": [
-    "@babel/env",
+    ["@babel/preset-env", {
+      "loose": true
+    }],
     "@babel/react"
   ],
   "env": {
     "production-esm": {
       "presets": [
-        ["@babel/env", { "modules": false }],
+        ["@babel/env", {
+          "modules": false,
+          "loose": true
+        }],
         "@babel/react"
       ]
     }

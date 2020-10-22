@@ -24,9 +24,7 @@ function applyVars(rawString, args) {
   }
 
   let finalString = rawString;
-  Object.entries(args).forEach((entry) => {
-    const key = entry[0];
-    const value = entry[1];
+  Object.entries(args).forEach(([key, value]) => {
     finalString = finalString.replace(`{${key}}`, value);
   });
 
