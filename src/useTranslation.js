@@ -40,7 +40,11 @@ export default function useTranslation(string, args = {}) {
 
   const { locale, defaultLocale, languageFiles } = context;
 
-  const [translatedString, setTranslatedString] = useState(null);
+  const isDefaultLocale = locale === defaultLocale;
+
+  const [translatedString, setTranslatedString] = useState(
+    isDefaultLocale ? applyVars(string, args) : null,
+  );
 
   useEffect(() => {
     function applyVarsAndSet(str) {
@@ -48,7 +52,7 @@ export default function useTranslation(string, args = {}) {
       setTranslatedString(stringWithArgs);
     }
 
-    if (locale === defaultLocale) {
+    if (isDefaultLocale) {
       applyVarsAndSet(string);
     } else {
       getTranslatedString(string, languageFiles, locale).then(applyVarsAndSet);
