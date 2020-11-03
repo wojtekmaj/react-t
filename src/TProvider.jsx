@@ -10,13 +10,22 @@ import { getMatchingLocale } from './utils';
 
 export const Context = createContext();
 
-function getLocaleFromDocument() {
-  return document.documentElement.getAttribute('lang');
-}
-
 export default function TProvider({ children, defaultLocale = 'en-US', languageFiles = {} }) {
+  const supportedLocales = Object.keys(languageFiles);
+
+  function getLocaleFromDocument() {
+    const lang = document.documentElement.getAttribute('lang');
+
+    if (lang !== defaultLocale && !supportedLocales.includes(lang)) {
+      // eslint-disable-next-line no-console
+      console.error(`Missing locale: ${lang}`);
+      return undefined;
+    }
+
+    return lang;
+  }
+
   function getLocaleFromUserPreferences() {
-    const supportedLocales = Object.keys(languageFiles);
     return getMatchingLocale(supportedLocales);
   }
 
