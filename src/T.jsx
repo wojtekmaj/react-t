@@ -9,5 +9,4 @@ export default function T({ children, ...args }) {
 
 T.propTypes = {
   children: PropTypes.string,
-  locale: PropTypes.string,
 };

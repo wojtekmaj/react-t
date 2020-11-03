@@ -10,19 +10,35 @@ import { getMatchingLocale } from './utils';
 
 export const Context = createContext();
 
+function resolveLanguageFile(getterOrLanguageFile) {
+  if (!(getterOrLanguageFile instanceof Function)) {
+    return Promise.resolve(getterOrLanguageFile);
+  }
+
+  const promiseOrLanguageFile = getterOrLanguageFile();
+
+  if (!(promiseOrLanguageFile instanceof Promise)) {
+    return Promise.resolve(promiseOrLanguageFile);
+  }
+
+  return promiseOrLanguageFile;
+}
+
+function getMatchingDocumentLocale(supportedLocales, defaultLocale) {
+  const lang = document.documentElement.getAttribute('lang');
+
+  if (lang !== defaultLocale && !supportedLocales.includes(lang)) {
+    return undefined;
+  }
+
+  return lang;
+}
+
 export default function TProvider({ children, defaultLocale = 'en-US', languageFiles = {} }) {
   const supportedLocales = Object.keys(languageFiles);
 
   function getLocaleFromDocument() {
-    const lang = document.documentElement.getAttribute('lang');
-
-    if (lang !== defaultLocale && !supportedLocales.includes(lang)) {
-      // eslint-disable-next-line no-console
-      console.error(`Missing locale: ${lang}`);
-      return undefined;
-    }
-
-    return lang;
+    return getMatchingDocumentLocale(supportedLocales, defaultLocale);
   }
 
   function getLocaleFromUserPreferences() {
@@ -34,10 +50,11 @@ export default function TProvider({ children, defaultLocale = 'en-US', languageF
   }
 
   const observer = useRef();
-  const [locale, setLocale] = useState(getLocaleFromDocumentOrUserPreferences);
+  const [languageFile, setLanguageFile] = useState();
 
   function onLangAttributeChange() {
-    setLocale(getLocaleFromDocumentOrUserPreferences);
+    const locale = getLocaleFromDocumentOrUserPreferences();
+    resolveLanguageFile(languageFiles[locale]).then(setLanguageFile);
   }
 
   useEffect(() => {
@@ -55,13 +72,7 @@ export default function TProvider({ children, defaultLocale = 'en-US', languageF
   }, []);
 
   return (
-    <Context.Provider
-      value={{
-        defaultLocale,
-        languageFiles,
-        locale,
-      }}
-    >
+    <Context.Provider value={{ languageFile }}>
       {children}
     </Context.Provider>
   );

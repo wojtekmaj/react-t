@@ -2,34 +2,12 @@ import { useContext, useState, useEffect } from 'react';
 
 import { Context } from './TProvider';
 
-function resolveLanguageFile(getterOrLanguageFile) {
-  if (!(getterOrLanguageFile instanceof Function)) {
-    return Promise.resolve(getterOrLanguageFile);
+function getTranslatedString(languageFile, string) {
+  if (languageFile && typeof languageFile[string] === 'string') {
+    return languageFile[string];
   }
 
-  const promiseOrLanguageFile = getterOrLanguageFile();
-
-  if (!(promiseOrLanguageFile instanceof Promise)) {
-    return Promise.resolve(promiseOrLanguageFile);
-  }
-
-  return promiseOrLanguageFile;
-}
-
-function getTranslatedString(string, languageFiles, locale) {
-  return resolveLanguageFile(languageFiles[locale])
-    .then((languageFile) => {
-      if (typeof languageFile[string] === 'string') {
-        return languageFile[string];
-      }
-
-      return string;
-    })
-    .catch(() => {
-      // eslint-disable-next-line no-console
-      console.error(`Failed to load locale: ${locale}`);
-      return string;
-    });
+  return string;
 }
 
 function applyVars(rawString, args) {
@@ -52,26 +30,18 @@ export default function useTranslation(string, args = {}) {
     throw new Error('Unable to find TProvider context. Did you wrap your app in <TProvider />?');
   }
 
-  const { locale, defaultLocale, languageFiles } = context;
-
-  const isDefaultLocale = locale === defaultLocale;
+  const { languageFile } = context;
 
   const [translatedString, setTranslatedString] = useState(
-    isDefaultLocale ? applyVars(string, args) : null,
+    languageFile ? null : applyVars(string, args),
   );
 
   useEffect(() => {
-    function applyVarsAndSet(str) {
-      const stringWithArgs = applyVars(str, args);
-      setTranslatedString(stringWithArgs);
-    }
+    const rawTranslatedString = getTranslatedString(languageFile, string);
+    const stringWithArgs = applyVars(rawTranslatedString, args);
 
-    if (isDefaultLocale) {
-      applyVarsAndSet(string);
-    } else {
-      getTranslatedString(string, languageFiles, locale).then(applyVarsAndSet);
-    }
-  }, [string, ...Object.values(args), locale]);
+    setTranslatedString(stringWithArgs);
+  }, [languageFile, string, ...Object.values(args)]);
 
   return translatedString;
 }
