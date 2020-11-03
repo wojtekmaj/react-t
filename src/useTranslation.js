@@ -32,7 +32,14 @@ function applyVars(rawString, args) {
 }
 
 export default function useTranslation(string, args = {}) {
-  const { locale, defaultLocale, languageFiles } = useContext(Context);
+  const context = useContext(Context);
+
+  if (!context) {
+    throw new Error('Unable to find TProvider context. Did you wrap your app in <TProvider />?');
+  }
+
+  const { locale, defaultLocale, languageFiles } = context;
+
   const [translatedString, setTranslatedString] = useState(null);
 
   useEffect(() => {
