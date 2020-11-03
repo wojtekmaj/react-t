@@ -2,8 +2,22 @@ import { useContext, useState, useEffect } from 'react';
 
 import { Context } from './TProvider';
 
+function resolveLanguageFile(getterOrLanguageFile) {
+  if (!(getterOrLanguageFile instanceof Function)) {
+    return Promise.resolve(getterOrLanguageFile);
+  }
+
+  const promiseOrLanguageFile = getterOrLanguageFile();
+
+  if (!(promiseOrLanguageFile instanceof Promise)) {
+    return Promise.resolve(promiseOrLanguageFile);
+  }
+
+  return promiseOrLanguageFile;
+}
+
 function getTranslatedString(string, languageFiles, locale) {
-  return languageFiles[locale]()
+  return resolveLanguageFile(languageFiles[locale])
     .then((languageFile) => {
       if (typeof languageFile[string] === 'string') {
         return languageFile[string];
@@ -13,7 +27,7 @@ function getTranslatedString(string, languageFiles, locale) {
     })
     .catch(() => {
       // eslint-disable-next-line no-console
-      console.error(`Unable to load locale: ${locale}`);
+      console.error(`Failed to load locale: ${locale}`);
       return string;
     });
 }
