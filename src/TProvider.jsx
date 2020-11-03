@@ -1,10 +1,11 @@
 import React, {
   createContext,
+  useCallback,
   useEffect,
-  useRef,
   useState,
 } from 'react';
 import PropTypes from 'prop-types';
+import { useMutationObserver } from '@wojtekmaj/react-hooks';
 
 import { getMatchingLocale } from './utils';
 
@@ -34,6 +35,11 @@ function getMatchingDocumentLocale(supportedLocales, defaultLocale) {
   return lang;
 }
 
+const observerConfig = {
+  attributeFilter: ['lang'],
+  attributes: true,
+};
+
 export default function TProvider({ children, defaultLocale = 'en-US', languageFiles = {} }) {
   const supportedLocales = Object.keys(languageFiles);
 
@@ -49,27 +55,15 @@ export default function TProvider({ children, defaultLocale = 'en-US', languageF
     return getLocaleFromDocument() || getLocaleFromUserPreferences() || defaultLocale;
   }
 
-  const observer = useRef();
   const [languageFile, setLanguageFile] = useState();
 
-  function onLangAttributeChange() {
+  const onLangAttributeChange = useCallback(() => {
     const locale = getLocaleFromDocumentOrUserPreferences();
     resolveLanguageFile(languageFiles[locale]).then(setLanguageFile);
-  }
-
-  useEffect(() => {
-    onLangAttributeChange();
-    observer.current = new MutationObserver(onLangAttributeChange);
-    observer.current.observe(
-      document.documentElement,
-      {
-        attributeFilter: ['lang'],
-        attributes: true,
-      },
-    );
-
-    return () => observer.current.disconnect();
   }, []);
+
+  useEffect(onLangAttributeChange, []);
+  useMutationObserver(document.documentElement, observerConfig, onLangAttributeChange);
 
   return (
     <Context.Provider value={{ languageFile }}>

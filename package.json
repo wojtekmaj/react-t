@@ -34,6 +34,7 @@
   },
   "license": "MIT",
   "dependencies": {
+    "@wojtekmaj/react-hooks": "^1.7.0",
     "get-user-locale": "^1.4.0",
     "lodash.once": "^4.0.0",
     "prop-types": "^15.6.0"

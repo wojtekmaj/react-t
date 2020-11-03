@@ -1772,6 +1772,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@wojtekmaj/react-hooks@npm:^1.7.0":
+  version: 1.7.0
+  resolution: "@wojtekmaj/react-hooks@npm:1.7.0"
+  peerDependencies:
+    react: ^16.8.0 || ^17.0.0-0
+  checksum: e80cf34ffbaea287ff78063212db3cd2410d7dedae45f920857d3f432df77e66c28b8d4899517a74c56822b283d7c0b5f3ae8832212f88f910d84bb75d7674e2
+  languageName: node
+  linkType: hard
+
 "@wojtekmaj/react-t@workspace:.":
   version: 0.0.0-use.local
   resolution: "@wojtekmaj/react-t@workspace:."
@@ -1783,6 +1792,7 @@ __metadata:
     "@babel/preset-react": ^7.9.0
     "@testing-library/jest-dom": ^5.11.5
     "@testing-library/react": ^11.1.0
+    "@wojtekmaj/react-hooks": ^1.7.0
     babel-eslint: ^10.0.0
     cross-env: ^7.0.0
     eslint: ~7.2.0
