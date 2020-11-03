@@ -38,6 +38,16 @@ describe('<T /> component', () => {
     restoreConsole();
   });
 
+  it('renders nothing given nothing', () => {
+    const { container } = render(
+      <TProvider>
+        <T />
+      </TProvider>,
+    );
+
+    expect(container.firstChild).toBe(null);
+  });
+
   it('returns original phrase given no language files', () => {
     const { getByText } = render(
       <TProvider>
