@@ -30,7 +30,7 @@ export default function TProvider({ children, defaultLocale = 'en-US', languageF
   }
 
   function getLocaleFromDocumentOrUserPreferences() {
-    return getLocaleFromDocument() || getLocaleFromUserPreferences();
+    return getLocaleFromDocument() || getLocaleFromUserPreferences() || defaultLocale;
   }
 
   const observer = useRef();
