@@ -85,6 +85,18 @@ If `<html lang="…">` attribute is not provided the following happens:
 
 ## User guide
 
+### Usage of `TProvider` component
+
+Wrap your app in `<TProvider />`.
+
+Define `languageFiles` prop that contains an object of functions that return promises:
+
+```js
+{
+  'de-DE': () => import('./myLanguageFile.json'),
+}
+```
+
 ### Usage of the `T` component:
 
 Define translatable string in the code using `<T>` tag:
