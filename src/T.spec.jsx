@@ -17,11 +17,11 @@ const syncLanguageFiles = {
 };
 
 const asyncLanguageFiles = {
-  'de-DE': () => new Promise(resolve => resolve({ 'Hello world!': 'Hallo Welt!' })),
-  'es-ES': () => new Promise(resolve => resolve({ 'Hello world!': '¡Hola Mundo!' })),
+  'de-DE': () => new Promise((resolve) => resolve({ 'Hello world!': 'Hallo Welt!' })),
+  'es-ES': () => new Promise((resolve) => resolve({ 'Hello world!': '¡Hola Mundo!' })),
 };
 
-jest.mock('lodash.once', () => fn => fn);
+jest.mock('lodash.once', () => (fn) => fn);
 
 describe('<T /> component', () => {
   beforeEach(() => {

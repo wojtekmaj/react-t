@@ -20,13 +20,6 @@
     "plugin:react/recommended"
   ],
   "rules": {
-    "arrow-parens": [
-      "error",
-      "as-needed",
-      {
-        "requireForBlockBody": true
-      }
-    ],
     "jsx-a11y/label-has-associated-control": [
       "error",
       {

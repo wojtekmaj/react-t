@@ -12,7 +12,7 @@ import { getUserLocales } from 'get-user-locale';
  * @param {String[]} arr Array of language codes
  */
 function extendLanguageCodes(arr) {
-  return arr.map(el => (
+  return arr.map((el) => (
     el.includes('-') ? el : `${el}-${el.toUpperCase()}`
   ));
 }
@@ -29,6 +29,6 @@ const getExtendedUserLocales = once(() => {
  */
 export const getMatchingLocale = once((supportedLocales) => {
   const extendedUserLocales = getExtendedUserLocales();
-  const matchingLocale = extendedUserLocales.find(locale => supportedLocales.includes(locale));
+  const matchingLocale = extendedUserLocales.find((locale) => supportedLocales.includes(locale));
   return matchingLocale;
 });
