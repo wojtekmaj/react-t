@@ -1,4 +1,4 @@
-[![npm](https://img.shields.io/npm/v/@wojtekmaj/react-t.svg)](https://www.npmjs.com/package/@wojtekmaj/react-t) ![downloads](https://img.shields.io/npm/dt/@wojtekmaj/react-t.svg) [![build](https://travis-ci.com/wojtekmaj/react-t.svg?branch=master)](https://travis-ci.com/wojtekmaj/react-t) ![dependencies](https://img.shields.io/david/wojtekmaj/react-t.svg) ![dev dependencies](https://img.shields.io/david/dev/wojtekmaj/react-t.svg) [![tested with jest](https://img.shields.io/badge/tested_with-jest-99424f.svg)](https://github.com/facebook/jest)
+[![npm](https://img.shields.io/npm/v/@wojtekmaj/react-t.svg)](https://www.npmjs.com/package/@wojtekmaj/react-t) ![downloads](https://img.shields.io/npm/dt/@wojtekmaj/react-t.svg) [![CI](https://github.com/wojtekmaj/react-t/workflows/CI/badge.svg)](https://github.com/wojtekmaj/react-t/actions) ![dependencies](https://img.shields.io/david/wojtekmaj/react-t.svg) ![dev dependencies](https://img.shields.io/david/dev/wojtekmaj/react-t.svg) [![tested with jest](https://img.shields.io/badge/tested_with-jest-99424f.svg)](https://github.com/facebook/jest)
 
 # React-T
 
