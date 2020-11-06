@@ -1813,11 +1813,7 @@ __metadata:
     "@wojtekmaj/react-hooks": ^1.7.0
     cross-env: ^7.0.0
     eslint: ^7.12.0
-    eslint-config-airbnb: ^18.2.0
-    eslint-plugin-import: ^2.22.0
-    eslint-plugin-jsx-a11y: ^6.4.0
-    eslint-plugin-react: ^7.21.0
-    eslint-plugin-react-hooks: ^4.2.0
+    eslint-config-wojtekmaj: ^0.4.0
     get-user-locale: ^1.4.0
     jest: ^26.0.0
     lodash.once: ^4.0.0
@@ -3144,6 +3140,22 @@ __metadata:
     eslint-plugin-react: ^7.20.0
     eslint-plugin-react-hooks: ^4 || ^3 || ^2.3.0 || ^1.7.0
   checksum: 9cd736cafc339a4c3f5eb59f5d77fb98e986f06b07ff4fe78149c08bf2d202b097879cddceb812a36aeda99a099e0f2f1efe7a896943d6b191190c41eeb52835
+  languageName: node
+  linkType: hard
+
+"eslint-config-wojtekmaj@npm:^0.4.0":
+  version: 0.4.0
+  resolution: "eslint-config-wojtekmaj@npm:0.4.0"
+  dependencies:
+    eslint-config-airbnb: ^18.2.0
+    eslint-config-airbnb-base: ^14.2.0
+    eslint-plugin-import: ^2.22.0
+    eslint-plugin-jsx-a11y: ^6.4.0
+    eslint-plugin-react: ^7.21.0
+    eslint-plugin-react-hooks: ^4.2.0
+  peerDependencies:
+    eslint: ^7.0.0
+  checksum: 99f2312c2a57cc74e1be83cd72f3cda6bf4dc2e22fb59cd14f6f2e0cb7ff3409927e4ed96632b00b48a73ec5f42391c9826ccc73d2d020ac8461b25294f06f08
   languageName: node
   linkType: hard
 
