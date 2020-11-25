@@ -1,8 +1,6 @@
 import once from 'lodash.once';
 import { getUserLocales } from 'get-user-locale';
 
-/* eslint-disable import/prefer-default-export */
-
 /**
  * Extends language codes if necessary. For example, given:
  *   ['en-US', 'pl']
