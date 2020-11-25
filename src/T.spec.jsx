@@ -77,13 +77,13 @@ describe('<T /> component', () => {
   it('returns original phrase if html lang equal to defaultLanguage is given', async () => {
     document.documentElement.setAttribute('lang', 'en-US');
 
-    render(
+    const { getByText } = render(
       <TProvider languageFiles={languageFiles}>
         <T>Hello world!</T>
       </TProvider>,
     );
 
-    expect(await screen.findByText('Hello world!')).toBeInTheDocument();
+    expect(getByText('Hello world!')).toBeInTheDocument();
   });
 
   it('returns translated phrase if html lang is given and language files are given', async () => {
