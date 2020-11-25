@@ -7,8 +7,8 @@ import TProvider from './TProvider';
 import { muteConsole, restoreConsole } from '../test-utils';
 
 const languageFiles = {
-  'de-DE': () => ({ 'Hello world!': 'Hallo Welt!' }),
-  'es-ES': () => ({ 'Hello world!': '¡Hola Mundo!' }),
+  'de-DE': ({ 'Hello world!': 'Hallo Welt!' }),
+  'es-ES': ({ 'Hello world!': '¡Hola Mundo!' }),
 };
 
 const syncLanguageFiles = {
