@@ -1,4 +1,4 @@
-import { useContext, useState, useEffect } from 'react';
+import { useContext, useMemo } from 'react';
 
 import { Context } from './TProvider';
 
@@ -32,16 +32,13 @@ export default function useTranslation(string, args = {}) {
 
   const { languageFile } = context;
 
-  const [translatedString, setTranslatedString] = useState(
-    languageFile ? null : applyVars(string, args),
-  );
-
-  useEffect(() => {
+  const translatedString = useMemo(() => {
     const rawTranslatedString = getTranslatedString(languageFile, string);
     const stringWithArgs = applyVars(rawTranslatedString, args);
 
-    setTranslatedString(stringWithArgs);
-  }, [languageFile, string, ...Object.values(args)]);
+    return stringWithArgs;
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [languageFile, string, ...JSON.stringify(args)]);
 
   return translatedString;
 }
