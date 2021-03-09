@@ -7,7 +7,7 @@ import { getUserLocales } from 'get-user-locale';
  * will return:
  *   ['en-US', 'pl-PL']
  *
- * @param {String[]} arr Array of language codes
+ * @param {string[]} arr Array of language codes
  */
 function extendLanguageCodes(arr) {
   return arr.map((el) => (
@@ -23,7 +23,7 @@ const getExtendedUserLocales = once(() => {
 /**
  * Finds a locale which both we support and user prefers.
  *
- * @param {String[]} supportedLocales Supported locales
+ * @param {string[]} supportedLocales Supported locales
  */
 export const getMatchingLocale = once((supportedLocales) => {
   const extendedUserLocales = getExtendedUserLocales();
