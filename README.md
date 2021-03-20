@@ -71,17 +71,15 @@ function MyComponent() {
 
 ### How the locale is detected?
 
-#### Variant 1
+React-T detects locale to use by going through the list of possible sources:
 
-`<html lang="…">` attribute is read. If provided, React-T will use this locale, provided that it's supported (provided in `languageFiles`). Otherwise, default locale is used.
+1. `locale` prop provided to `<TProvider />`
+2. `<html lang="…">` attribute
+3. List of preferred user locales created using [`get-user-locale`](https://github.com/wojtekmaj/get-user-locale)
 
-#### Variant 2
+On each step, React-T checks if a given locale is supported (provided in `languageFiles`, or defined as `defaultLocale`). If a given locale is supported, it'll use it. If not, it'll move to the next step on the list.
 
-If `<html lang="…">` attribute is not provided the following happens:
-
-* A list of preferred user locales is created using [`get-user-locale`](https://github.com/wojtekmaj/get-user-locale).
-* A list of supported user locales is constructed from `languageFiles` prop provided to `<TProvider />`.
-* Each locale from the list of preferred user locales is checked whether it is supported or not. When a match is found React-T will use this locale. Otherwise, default locale is used.
+If no supported locale is detected, `defaultLocale` is used (no translation is being made).
 
 ## User guide
 
