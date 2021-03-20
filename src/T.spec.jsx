@@ -177,7 +177,7 @@ describe('<T /> component', () => {
     restoreConsole();
   });
 
-  it('returns translated phrase in browser language is given', async () => {
+  it('returns translated phrase if browser language is given', async () => {
     const languageGetter = jest.spyOn(window.navigator, 'language', 'get');
     languageGetter.mockReturnValue('de-DE');
 
@@ -190,5 +190,32 @@ describe('<T /> component', () => {
     expect(await screen.findByText('Hallo Welt!')).toBeInTheDocument();
 
     languageGetter.mockRestore();
+  });
+
+  it('returns translated phrase if locale prop is given but no languageFiles were given', () => {
+    muteConsole();
+
+    const { getByText } = render(
+      <TProvider locale="de-DE">
+        <T>Hello world!</T>
+      </TProvider>,
+    );
+
+    expect(getByText('Hello world!')).toBeInTheDocument();
+
+    restoreConsole();
+  });
+
+  it('returns translated phrase if locale prop is given', async () => {
+    render(
+      <TProvider
+        languageFiles={asyncLanguageFiles}
+        locale="de-DE"
+      >
+        <T>Hello world!</T>
+      </TProvider>,
+    );
+
+    expect(await screen.findByText('Hallo Welt!')).toBeInTheDocument();
   });
 });

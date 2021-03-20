@@ -46,7 +46,12 @@ const observerConfig = {
   attributes: true,
 };
 
-export default function TProvider({ children, defaultLocale = 'en-US', languageFiles = {} }) {
+export default function TProvider({
+  children,
+  defaultLocale = 'en-US',
+  languageFiles = {},
+  locale: localeProps,
+}) {
   const supportedLocales = Object.keys(languageFiles);
 
   function getLocaleFromDocument() {
@@ -58,7 +63,12 @@ export default function TProvider({ children, defaultLocale = 'en-US', languageF
   }
 
   function getLocaleFromDocumentOrUserPreferences() {
-    return getLocaleFromDocument() || getLocaleFromUserPreferences() || defaultLocale;
+    return (
+      localeProps
+      || getLocaleFromDocument()
+      || getLocaleFromUserPreferences()
+      || defaultLocale
+    );
   }
 
   const [languageFile, setLanguageFile] = useState();
@@ -85,4 +95,5 @@ TProvider.propTypes = {
   languageFiles: PropTypes.objectOf(
     PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
   ),
+  locale: PropTypes.string,
 };
