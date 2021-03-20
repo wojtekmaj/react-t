@@ -11,6 +11,8 @@ import { getMatchingLocale } from './utils';
 
 export const Context = createContext();
 
+const isBrowser = typeof window !== 'undefined' && 'document' in window;
+
 function resolveLanguageFile(getterOrLanguageFile) {
   if (!(getterOrLanguageFile instanceof Function)) {
     return Promise.resolve(getterOrLanguageFile);
@@ -26,6 +28,10 @@ function resolveLanguageFile(getterOrLanguageFile) {
 }
 
 function getMatchingDocumentLocale(supportedLocales, defaultLocale) {
+  if (!isBrowser) {
+    return undefined;
+  }
+
   const lang = document.documentElement.getAttribute('lang');
 
   if (lang !== defaultLocale && !supportedLocales.includes(lang)) {
@@ -63,7 +69,8 @@ export default function TProvider({ children, defaultLocale = 'en-US', languageF
   }, []);
 
   useEffect(onLangAttributeChange, []);
-  useMutationObserver(document.documentElement, observerConfig, onLangAttributeChange);
+
+  useMutationObserver(isBrowser && document.documentElement, observerConfig, onLangAttributeChange);
 
   return (
     <Context.Provider value={{ languageFile }}>
