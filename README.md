@@ -25,6 +25,8 @@ Simple translation module for React applications.
 
 Your project needs to use React 16.8 or later.
 
+React-T is also compatible with React Native.
+
 ### Installation
 
 Add React-T to your project by executing `npm install @wojtekmaj/react-t` or `yarn add @wojtekmaj/react-t`.
