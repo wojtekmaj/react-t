@@ -1,32 +1,40 @@
 import once from 'lodash.once';
 import { getUserLocales } from 'get-user-locale';
 
-/**
- * Extends language codes if necessary. For example, given:
- *   ['en-US', 'pl']
- * will return:
- *   ['en-US', 'pl-PL']
- *
- * @param {string[]} arr Array of language codes
- */
-function extendLanguageCodes(arr) {
-  return arr.map((el) => (
-    el.includes('-') ? el : `${el}-${el.toUpperCase()}`
+function altLanguageCode(languageCode) {
+  return (languageCode.includes('-')
+    ? languageCode.split('-')[0]
+    : `${languageCode}-${languageCode.toUpperCase()}`
+  );
+}
+
+function getMatchingSupportedLocale(userLocale, supportedLocales) {
+  return supportedLocales.find((el) => (
+    // First, try and find exact match
+    el === userLocale
+    // If not found, try and alter user locale
+    || el === altLanguageCode(userLocale)
+    // If not found, try and alter supported locale instead
+    || altLanguageCode(el) === userLocale
   ));
 }
 
-const getExtendedUserLocales = once(() => {
+function getMatchingLocaleInternal(supportedLocales) {
   const userLocales = getUserLocales();
-  return extendLanguageCodes(userLocales);
-});
+
+  let matchingLocale;
+
+  userLocales.some((userLocale) => {
+    matchingLocale = getMatchingSupportedLocale(userLocale, supportedLocales);
+    return matchingLocale;
+  });
+
+  return matchingLocale;
+}
 
 /**
  * Finds a locale which both we support and user prefers.
  *
  * @param {string[]} supportedLocales Supported locales
  */
-export const getMatchingLocale = once((supportedLocales) => {
-  const extendedUserLocales = getExtendedUserLocales();
-  const matchingLocale = extendedUserLocales.find((locale) => supportedLocales.includes(locale));
-  return matchingLocale;
-});
+export const getMatchingLocale = once(getMatchingLocaleInternal);
