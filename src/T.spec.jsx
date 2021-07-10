@@ -192,7 +192,7 @@ describe('<T /> component', () => {
     languageGetter.mockRestore();
   });
 
-  it('returns translated phrase if locale prop is given but no languageFiles were given', () => {
+  it('returns original phrase if locale prop is given but no languageFiles were given', () => {
     muteConsole();
 
     const { getByText } = render(
