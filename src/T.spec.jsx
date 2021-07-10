@@ -80,6 +80,16 @@ describe('<T /> component', () => {
     expect(getByText('Hello John!')).toBeInTheDocument();
   });
 
+  it('returns original phrase with variable placeholder given no language files and no args', () => {
+    const { getByText } = render(
+      <TProvider>
+        <T>{'Hello {name}!'}</T>
+      </TProvider>,
+    );
+
+    expect(getByText('Hello {name}!')).toBeInTheDocument();
+  });
+
   it('returns original phrase with multiple variables given no language files', () => {
     const { getByText } = render(
       <TProvider>
@@ -145,6 +155,18 @@ describe('<T /> component', () => {
     );
 
     expect(await screen.findByText('Hallo John!')).toBeInTheDocument();
+  });
+
+  it('returns translated phrase with variable placeholder if locale prop is given given no args', async () => {
+    document.documentElement.setAttribute('lang', 'de-DE');
+
+    render(
+      <TProvider languageFiles={languageFiles}>
+        <T>{'Hello {name}!'}</T>
+      </TProvider>,
+    );
+
+    expect(await screen.findByText('Hallo {name}!')).toBeInTheDocument();
   });
 
   it('returns translated phrase with multiple variables if locale prop is given', async () => {
