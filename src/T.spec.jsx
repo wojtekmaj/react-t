@@ -6,19 +6,31 @@ import TProvider from './TProvider';
 
 import { muteConsole, restoreConsole } from '../test-utils';
 
+const deLanguageFile = {
+  'Hello world!': 'Hallo Welt!',
+  'Hello {name}!': 'Hallo {name}!',
+  'Hello {name} and {other}!': 'Hallo {name} und {other}!',
+};
+
+const esLanguageFile = {
+  'Hello world!': '¡Hola Mundo!',
+  'Hello {name}!': '¡Hola {name}!',
+  'Hello {name} and {other}!': '¡Hola {name} y {other}!',
+};
+
 const languageFiles = {
-  'de-DE': ({ 'Hello world!': 'Hallo Welt!' }),
-  'es-ES': ({ 'Hello world!': '¡Hola Mundo!' }),
+  'de-DE': deLanguageFile,
+  'es-ES': esLanguageFile,
 };
 
 const syncLanguageFiles = {
-  'de-DE': () => ({ 'Hello world!': 'Hallo Welt!' }),
-  'es-ES': () => ({ 'Hello world!': '¡Hola Mundo!' }),
+  'de-DE': () => deLanguageFile,
+  'es-ES': () => esLanguageFile,
 };
 
 const asyncLanguageFiles = {
-  'de-DE': () => new Promise((resolve) => resolve({ 'Hello world!': 'Hallo Welt!' })),
-  'es-ES': () => new Promise((resolve) => resolve({ 'Hello world!': '¡Hola Mundo!' })),
+  'de-DE': () => new Promise((resolve) => resolve(deLanguageFile)),
+  'es-ES': () => new Promise((resolve) => resolve(esLanguageFile)),
 };
 
 jest.mock('lodash.once', () => (fn) => fn);
@@ -56,6 +68,31 @@ describe('<T /> component', () => {
     );
 
     expect(getByText('Hello world!')).toBeInTheDocument();
+  });
+
+  it('returns original phrase with variable given no language files', () => {
+    const { getByText } = render(
+      <TProvider>
+        <T name="John">{'Hello {name}!'}</T>
+      </TProvider>,
+    );
+
+    expect(getByText('Hello John!')).toBeInTheDocument();
+  });
+
+  it('returns original phrase with multiple variables given no language files', () => {
+    const { getByText } = render(
+      <TProvider>
+        <T
+          name="John"
+          other="Elisabeth"
+        >
+          {'Hello {name} and {other}!'}
+        </T>
+      </TProvider>,
+    );
+
+    expect(getByText('Hello John and Elisabeth!')).toBeInTheDocument();
   });
 
   it('returns original phrase if html lang is given but no languageFiles were given', () => {
@@ -96,6 +133,30 @@ describe('<T /> component', () => {
     );
 
     expect(await screen.findByText('Hallo Welt!')).toBeInTheDocument();
+  });
+
+  it('returns translated phrase with variable if locale prop is given', async () => {
+    document.documentElement.setAttribute('lang', 'de-DE');
+
+    render(
+      <TProvider languageFiles={languageFiles}>
+        <T name="John">{'Hello {name}!'}</T>
+      </TProvider>,
+    );
+
+    expect(await screen.findByText('Hallo John!')).toBeInTheDocument();
+  });
+
+  it('returns translated phrase with multiple variables if locale prop is given', async () => {
+    document.documentElement.setAttribute('lang', 'de-DE');
+
+    render(
+      <TProvider languageFiles={languageFiles}>
+        <T name="John" other="Elisabeth">{'Hello {name} and {other}!'}</T>
+      </TProvider>,
+    );
+
+    expect(await screen.findByText('Hallo John und Elisabeth!')).toBeInTheDocument();
   });
 
   it('returns translated phrase if html lang is given and synchronous functions returning language files are given', async () => {
