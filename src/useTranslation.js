@@ -23,7 +23,7 @@ function applyVars(rawString, args) {
   return finalString;
 }
 
-export default function useTranslation(string, args = {}) {
+export default function useTranslation(string, args) {
   const context = useContext(Context);
 
   if (!context) {
