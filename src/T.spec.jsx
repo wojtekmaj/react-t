@@ -122,6 +122,29 @@ describe('<T /> component', () => {
     })).toBeInTheDocument();
   });
 
+  it('returns original phrase with React component variable given no language files', () => {
+    function John() {
+      return (
+        <strong>John</strong>
+      );
+    }
+
+    const { getByText } = render(
+      <TProvider>
+        <T name={<John />}>{'Hello {name}!'}</T>
+      </TProvider>,
+    );
+
+    expect(getByText((content, node) => {
+      const nodeName = node.nodeName.toLowerCase();
+      return nodeName === 'div' && node.textContent === 'Hello John!';
+    })).toBeInTheDocument();
+    expect(getByText((content, node) => {
+      const nodeName = node.nodeName.toLowerCase();
+      return nodeName === 'strong' && node.textContent === 'John';
+    })).toBeInTheDocument();
+  });
+
   it('returns original phrase if html lang is given but no languageFiles were given', () => {
     muteConsole();
 
@@ -204,6 +227,31 @@ describe('<T /> component', () => {
     render(
       <TProvider languageFiles={languageFiles}>
         <T name={<strong>John</strong>}>{'Hello {name}!'}</T>
+      </TProvider>,
+    );
+
+    expect(await screen.findByText((content, node) => {
+      const nodeName = node.nodeName.toLowerCase();
+      return nodeName === 'div' && node.textContent === 'Hallo John!';
+    })).toBeInTheDocument();
+    expect(await screen.findByText((content, node) => {
+      const nodeName = node.nodeName.toLowerCase();
+      return nodeName === 'strong' && node.textContent === 'John';
+    })).toBeInTheDocument();
+  });
+
+  it('returns translated phrase with React component variable if locale prop is given', async () => {
+    document.documentElement.setAttribute('lang', 'de-DE');
+
+    function John() {
+      return (
+        <strong>John</strong>
+      );
+    }
+
+    render(
+      <TProvider languageFiles={languageFiles}>
+        <T name={<John />}>{'Hello {name}!'}</T>
       </TProvider>,
     );
 
