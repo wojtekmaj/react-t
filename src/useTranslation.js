@@ -1,4 +1,4 @@
-import React, { useContext, useMemo } from 'react';
+import React, { useContext } from 'react';
 
 import { Context } from './TProvider';
 
@@ -54,13 +54,12 @@ export default function useTranslation(string, args = {}) {
 
   const { languageFile } = context;
 
-  const translatedString = useMemo(() => {
+  const translatedString = (() => {
     const rawTranslatedString = getTranslatedString(languageFile, string);
     const stringWithArgs = applyVars(rawTranslatedString, args);
 
     return stringWithArgs;
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [languageFile, string, JSON.stringify(args)]);
+  })();
 
   return translatedString;
 }
