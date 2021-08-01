@@ -1,6 +1,6 @@
 {
   "name": "@wojtekmaj/react-t",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "Simple translation module for React applications.",
   "main": "dist/umd/index.js",
   "module": "dist/esm/index.js",
