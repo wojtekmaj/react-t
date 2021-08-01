@@ -13,6 +13,20 @@ export const Context = createContext();
 
 const isBrowser = typeof window !== 'undefined' && 'document' in window;
 
+function resolveLanguageFileSync(getterOrLanguageFile) {
+  if (getterOrLanguageFile instanceof Function) {
+    const promiseOrLanguageFile = getterOrLanguageFile();
+
+    if (promiseOrLanguageFile instanceof Promise) {
+      return undefined;
+    }
+
+    return promiseOrLanguageFile;
+  }
+
+  return getterOrLanguageFile;
+}
+
 function resolveLanguageFile(getterOrLanguageFile) {
   if (getterOrLanguageFile instanceof Function) {
     const promiseOrLanguageFile = getterOrLanguageFile();
@@ -71,11 +85,12 @@ export default function TProvider({
     );
   }
 
-  const [languageFile, setLanguageFile] = useState();
+  const locale = getLocaleFromDocumentOrUserPreferences();
+  const [languageFile, setLanguageFile] = useState(resolveLanguageFileSync(languageFiles[locale]));
 
   const onLangAttributeChange = useCallback(() => {
-    const locale = getLocaleFromDocumentOrUserPreferences();
-    resolveLanguageFile(languageFiles[locale]).then(setLanguageFile);
+    const nextLocale = getLocaleFromDocumentOrUserPreferences();
+    resolveLanguageFile(languageFiles[nextLocale]).then(setLanguageFile);
   }, []);
 
   useEffect(onLangAttributeChange, []);

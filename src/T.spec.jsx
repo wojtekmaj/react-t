@@ -136,49 +136,49 @@ describe('<T /> component', () => {
   it('returns translated phrase if html lang is given and language files are given', async () => {
     document.documentElement.setAttribute('lang', 'de-DE');
 
-    render(
+    const { getByText } = render(
       <TProvider languageFiles={languageFiles}>
         <T>Hello world!</T>
       </TProvider>,
     );
 
-    expect(await screen.findByText('Hallo Welt!')).toBeInTheDocument();
+    expect(getByText('Hallo Welt!')).toBeInTheDocument();
   });
 
   it('returns translated phrase with variable if locale prop is given', async () => {
     document.documentElement.setAttribute('lang', 'de-DE');
 
-    render(
+    const { getByText } = render(
       <TProvider languageFiles={languageFiles}>
         <T name="John">{'Hello {name}!'}</T>
       </TProvider>,
     );
 
-    expect(await screen.findByText('Hallo John!')).toBeInTheDocument();
+    expect(getByText('Hallo John!')).toBeInTheDocument();
   });
 
   it('returns translated phrase with variable placeholder if locale prop is given given no args', async () => {
     document.documentElement.setAttribute('lang', 'de-DE');
 
-    render(
+    const { getByText } = render(
       <TProvider languageFiles={languageFiles}>
         <T>{'Hello {name}!'}</T>
       </TProvider>,
     );
 
-    expect(await screen.findByText('Hallo {name}!')).toBeInTheDocument();
+    expect(getByText('Hallo {name}!')).toBeInTheDocument();
   });
 
   it('returns translated phrase with multiple variables if locale prop is given', async () => {
     document.documentElement.setAttribute('lang', 'de-DE');
 
-    render(
+    const { getByText } = render(
       <TProvider languageFiles={languageFiles}>
         <T name="John" other="Elisabeth">{'Hello {name} and {other}!'}</T>
       </TProvider>,
     );
 
-    expect(await screen.findByText('Hallo John und Elisabeth!')).toBeInTheDocument();
+    expect(getByText('Hallo John und Elisabeth!')).toBeInTheDocument();
   });
 
   it('returns translated phrase if html lang is given and synchronous functions returning language files are given', async () => {
