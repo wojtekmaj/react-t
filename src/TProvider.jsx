@@ -14,17 +14,17 @@ export const Context = createContext();
 const isBrowser = typeof window !== 'undefined' && 'document' in window;
 
 function resolveLanguageFile(getterOrLanguageFile) {
-  if (!(getterOrLanguageFile instanceof Function)) {
-    return Promise.resolve(getterOrLanguageFile);
-  }
+  if (getterOrLanguageFile instanceof Function) {
+    const promiseOrLanguageFile = getterOrLanguageFile();
 
-  const promiseOrLanguageFile = getterOrLanguageFile();
+    if (promiseOrLanguageFile instanceof Promise) {
+      return promiseOrLanguageFile;
+    }
 
-  if (!(promiseOrLanguageFile instanceof Promise)) {
     return Promise.resolve(promiseOrLanguageFile);
   }
 
-  return promiseOrLanguageFile;
+  return Promise.resolve(getterOrLanguageFile);
 }
 
 function getMatchingDocumentLocale(supportedLocales, defaultLocale) {
