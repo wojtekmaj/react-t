@@ -67,5 +67,6 @@
     "type": "git",
     "url": "https://github.com/wojtekmaj/react-t.git"
   },
-  "funding": "https://github.com/wojtekmaj/react-t?sponsor=1"
+  "funding": "https://github.com/wojtekmaj/react-t?sponsor=1",
+  "packageManager": "yarn@3.1.0"
 }
