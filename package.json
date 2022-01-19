@@ -32,7 +32,8 @@
     "@wojtekmaj/react-hooks": "^1.7.0",
     "get-user-locale": "^1.4.0",
     "lodash.once": "^4.0.0",
-    "prop-types": "^15.6.0"
+    "prop-types": "^15.6.0",
+    "tiny-invariant": "^1.0.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.15.0",

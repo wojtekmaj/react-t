@@ -1,4 +1,5 @@
 import { useContext, useMemo } from 'react';
+import invariant from 'tiny-invariant';
 
 import { Context } from './TProvider';
 
@@ -26,9 +27,7 @@ function applyVars(rawString, args) {
 export default function useTranslation(string, args) {
   const context = useContext(Context);
 
-  if (!context) {
-    throw new Error('Unable to find TProvider context. Did you wrap your app in <TProvider />?');
-  }
+  invariant(context, 'Unable to find TProvider context. Did you wrap your app in <TProvider />?');
 
   const { languageFile } = context;
 
