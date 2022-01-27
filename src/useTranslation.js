@@ -36,7 +36,7 @@ export default function useTranslation(string, args) {
     const stringWithArgs = applyVars(rawTranslatedString, args);
 
     return stringWithArgs;
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [languageFile, string, JSON.stringify(args)]);
 
   return translatedString;

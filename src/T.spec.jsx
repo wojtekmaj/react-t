@@ -43,9 +43,7 @@ describe('<T /> component', () => {
   it('throws when rendered without TProvider context', () => {
     muteConsole();
 
-    expect(() => render(
-      <T />,
-    )).toThrowError();
+    expect(() => render(<T />)).toThrowError();
 
     restoreConsole();
   });
@@ -93,10 +91,7 @@ describe('<T /> component', () => {
   it('returns original phrase with multiple variables given no language files', () => {
     const { getByText } = render(
       <TProvider>
-        <T
-          name="John"
-          other="Elisabeth"
-        >
+        <T name="John" other="Elisabeth">
           {'Hello {name} and {other}!'}
         </T>
       </TProvider>,
@@ -174,7 +169,9 @@ describe('<T /> component', () => {
 
     const { getByText } = render(
       <TProvider languageFiles={languageFiles}>
-        <T name="John" other="Elisabeth">{'Hello {name} and {other}!'}</T>
+        <T name="John" other="Elisabeth">
+          {'Hello {name} and {other}!'}
+        </T>
       </TProvider>,
     );
 
@@ -291,10 +288,7 @@ describe('<T /> component', () => {
 
   it('returns translated phrase if locale prop is given', async () => {
     render(
-      <TProvider
-        languageFiles={asyncLanguageFiles}
-        locale="de-DE"
-      >
+      <TProvider languageFiles={asyncLanguageFiles} locale="de-DE">
         <T>Hello world!</T>
       </TProvider>,
     );

@@ -2,21 +2,21 @@ import once from 'lodash.once';
 import { getUserLocales } from 'get-user-locale';
 
 function altLanguageCode(languageCode) {
-  return (languageCode.includes('-')
+  return languageCode.includes('-')
     ? languageCode.split('-')[0]
-    : `${languageCode}-${languageCode.toUpperCase()}`
-  );
+    : `${languageCode}-${languageCode.toUpperCase()}`;
 }
 
 function getMatchingSupportedLocale(userLocale, supportedLocales) {
-  return supportedLocales.find((el) => (
-    // First, try and find exact match
-    el === userLocale
-    // If not found, try and alter user locale
-    || el === altLanguageCode(userLocale)
-    // If not found, try and alter supported locale instead
-    || altLanguageCode(el) === userLocale
-  ));
+  return supportedLocales.find(
+    (el) =>
+      // First, try and find exact match
+      el === userLocale ||
+      // If not found, try and alter user locale
+      el === altLanguageCode(userLocale) ||
+      // If not found, try and alter supported locale instead
+      altLanguageCode(el) === userLocale,
+  );
 }
 
 function getMatchingLocaleInternal(supportedLocales) {

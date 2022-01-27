@@ -1,9 +1,4 @@
-import React, {
-  createContext,
-  useCallback,
-  useEffect,
-  useState,
-} from 'react';
+import React, { createContext, useCallback, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useMutationObserver } from '@wojtekmaj/react-hooks';
 
@@ -78,10 +73,7 @@ export default function TProvider({
 
   function getLocaleFromDocumentOrUserPreferences() {
     return (
-      localeProps
-      || getLocaleFromDocument()
-      || getLocaleFromUserPreferences()
-      || defaultLocale
+      localeProps || getLocaleFromDocument() || getLocaleFromUserPreferences() || defaultLocale
     );
   }
 
@@ -97,18 +89,12 @@ export default function TProvider({
 
   useMutationObserver(isBrowser && document.documentElement, observerConfig, onLangAttributeChange);
 
-  return (
-    <Context.Provider value={{ languageFile }}>
-      {children}
-    </Context.Provider>
-  );
+  return <Context.Provider value={{ languageFile }}>{children}</Context.Provider>;
 }
 
 TProvider.propTypes = {
   children: PropTypes.node,
   defaultLocale: PropTypes.string,
-  languageFiles: PropTypes.objectOf(
-    PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
-  ),
+  languageFiles: PropTypes.objectOf(PropTypes.oneOfType([PropTypes.object, PropTypes.func])),
   locale: PropTypes.string,
 };

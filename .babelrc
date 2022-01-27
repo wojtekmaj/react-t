@@ -1,27 +1,36 @@
 {
   "presets": [
-    ["@babel/preset-env", {
-      "loose": true
-    }],
+    [
+      "@babel/preset-env",
+      {
+        "loose": true
+      }
+    ],
     "@babel/react"
   ],
   "env": {
     "production-esm": {
       "presets": [
-        ["@babel/env", {
-          "modules": false,
-          "loose": true
-        }],
+        [
+          "@babel/env",
+          {
+            "modules": false,
+            "loose": true
+          }
+        ],
         "@babel/react"
       ]
     },
     "test": {
       "presets": [
-        ["@babel/env", {
-          "targets": {
-            "node": "current"
+        [
+          "@babel/env",
+          {
+            "targets": {
+              "node": "current"
+            }
           }
-        }]
+        ]
       ]
     }
   }

@@ -5,9 +5,10 @@
 Simple translation module for React applications.
 
 ## tl;dr
-* Install by executing `npm install @wojtekmaj/react-t` or `yarn add @wojtekmaj/react-t`.
-* Setup by adding `import { TProvider } from '@wojtekmaj/react-t'` and wrapping your app in `<TProvider />`.
-* Add languages by creating a JSON file, like this:
+
+- Install by executing `npm install @wojtekmaj/react-t` or `yarn add @wojtekmaj/react-t`.
+- Setup by adding `import { TProvider } from '@wojtekmaj/react-t'` and wrapping your app in `<TProvider />`.
+- Add languages by creating a JSON file, like this:
   ```json
   {
     "Hello world!": "Hallo Welt!"
@@ -17,7 +18,7 @@ Simple translation module for React applications.
   ```js
   <TProvider languageFiles={{ 'de-DE': () => import('./de-DE.json') }} />
   ```
-* Use by adding `import T from '@wojtekmaj/react-t'` and wrapping your text in  `<T />`.
+- Use by adding `import T from '@wojtekmaj/react-t'` and wrapping your text in `<T />`.
 
 ## Getting started
 
@@ -91,24 +92,24 @@ Wrap your app in `<TProvider />`.
 
 Define `languageFiles` prop that contains an object of:
 
-* functions that return promises:
-    ```js
-    {
-      'de-DE': () => import('./myLanguageFile.json'),
-    }
-    ```
-* functions that return language files:
-    ```js
-    {
-      'de-DE': () => myLanguageFile,
-    }
-    ```
-* language files:
-    ```js
-    {
-      'de-DE': myLanguageFile,
-    }
-    ```
+- functions that return promises:
+  ```js
+  {
+    'de-DE': () => import('./myLanguageFile.json'),
+  }
+  ```
+- functions that return language files:
+  ```js
+  {
+    'de-DE': () => myLanguageFile,
+  }
+  ```
+- language files:
+  ```js
+  {
+    'de-DE': myLanguageFile,
+  }
+  ```
 
 ### Usage of the `T` component:
 
