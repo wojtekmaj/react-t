@@ -1,4 +1,4 @@
 {
-  "setupFilesAfterEnv": ["<rootDir>/jest.setup.js"],
+  "setupFilesAfterEnv": ["@testing-library/jest-dom"],
   "testEnvironment": "jsdom"
 }
