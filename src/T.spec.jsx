@@ -33,6 +33,7 @@ const asyncLanguageFiles = {
   'es-ES': () => new Promise((resolve) => resolve(esLanguageFile)),
 };
 
+jest.mock('lodash.memoize', () => (fn) => fn);
 jest.mock('lodash.once', () => (fn) => fn);
 
 describe('<T /> component', () => {
