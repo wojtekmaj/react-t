@@ -85,7 +85,7 @@ export default function TProvider({
     resolveLanguageFile(languageFiles[nextLocale]).then(setLanguageFile);
   }, []);
 
-  useEffect(onLangAttributeChange, []);
+  useEffect(onLangAttributeChange, [onLangAttributeChange]);
 
   useMutationObserver(isBrowser && document.documentElement, observerConfig, onLangAttributeChange);
 
