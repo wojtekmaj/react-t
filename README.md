@@ -38,7 +38,7 @@ Here's an example of basic setup:
 
 ```js
 import React from 'react';
-import { render } from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import { TProvider } from '@wojtekmaj/react-t';
 
 import Root from './Root';
@@ -47,11 +47,10 @@ const languageFiles = {
   'de-DE': () => import('./de-DE.json'),
 };
 
-render(
+createRoot(document.getElementById('react-root')).render(
   <TProvider languageFiles={languageFiles}>
     <Root />
   </TProvider>,
-  document.getElementById('react-root'),
 );
 ```
 
