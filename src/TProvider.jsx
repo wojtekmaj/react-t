@@ -6,7 +6,7 @@ import { getMatchingLocale } from './utils';
 
 export const Context = createContext();
 
-const isBrowser = typeof window !== 'undefined' && 'document' in window;
+const isBrowser = typeof document !== 'undefined';
 
 function resolveLanguageFileSync(getterOrLanguageFile) {
   if (getterOrLanguageFile instanceof Function) {
