@@ -3882,11 +3882,11 @@ __metadata:
   linkType: hard
 
 "get-user-locale@npm:^2.0.0":
-  version: 2.0.0
-  resolution: "get-user-locale@npm:2.0.0"
+  version: 2.1.0
+  resolution: "get-user-locale@npm:2.1.0"
   dependencies:
     lodash.memoize: ^4.1.1
-  checksum: edb82aa04c4eb4490dbed7e1d9ef689cc570c0a8b4db7d2ad881670c92c6957984115d5fa7f67ad4f3f7b503e5a350857382eed3b98054875eb5e14825c23ea7
+  checksum: c7c56e8f80212b41fe8ccb142c59d383e1b1b4d309ff0b845c8073c8d1270e77468ae0fd879c39309095f48c529b1f088ef9b733e1b523b4ef7e944e9078eeab
   languageName: node
   linkType: hard
 
