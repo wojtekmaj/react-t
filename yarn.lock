@@ -2103,11 +2103,13 @@ __metadata:
   linkType: hard
 
 "@wojtekmaj/react-hooks@npm:^1.7.0":
-  version: 1.14.1
-  resolution: "@wojtekmaj/react-hooks@npm:1.14.1"
+  version: 1.16.1
+  resolution: "@wojtekmaj/react-hooks@npm:1.16.1"
+  dependencies:
+    "@types/react": "*"
   peerDependencies:
     react: ^16.8.0 || ^17.0.0 || ^18.0.0
-  checksum: 9838a47401a7391838b1f6f16794c112ce75e5ba7f46e107629131fe9166d391c08e5e10a5f41f5eb1903925299f403ae0609448940eb857e31e7fc6116627bf
+  checksum: bc580b6e4b479237d74ff1c2f9b5075d5b9d22e44213b9b4d82820f5f7d70afbe849ca51bbde5996b0d318695a27f49d980ee7b3258398fa728cdcff4def81e5
   languageName: node
   linkType: hard
 
