@@ -2,11 +2,13 @@ import { getUserLocales } from 'get-user-locale';
 
 import { getMatchingLocale } from './utils';
 
-jest.mock('lodash.once', () => (fn) => fn);
+jest.mock('lodash.once', () => (fn: () => void) => fn);
 
 jest.mock('get-user-locale', () => ({
   getUserLocales: jest.fn(),
 }));
+
+const mockedGetUserLocales = jest.mocked(getUserLocales);
 
 describe('getMatchingLocale()', () => {
   it.each`
@@ -28,7 +30,7 @@ describe('getMatchingLocale()', () => {
   `(
     'returns $expectedResult for userLocales = $userLocales and supportedLocales = $supportedLocales',
     ({ userLocales, supportedLocales, expectedResult }) => {
-      getUserLocales.mockReturnValueOnce(userLocales);
+      mockedGetUserLocales.mockReturnValueOnce(userLocales);
 
       const result = getMatchingLocale(supportedLocales);
 
