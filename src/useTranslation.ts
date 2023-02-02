@@ -3,7 +3,14 @@ import invariant from 'tiny-invariant';
 
 import { Context } from './TProvider';
 
-function getTranslatedString(languageFile, string) {
+import type { LanguageFile } from './TProvider';
+
+type Args = Record<string, string>;
+
+function getTranslatedString(
+  languageFile: LanguageFile | undefined,
+  string: string,
+): string | undefined {
   if (languageFile && typeof languageFile[string] === 'string') {
     return languageFile[string];
   }
@@ -11,8 +18,8 @@ function getTranslatedString(languageFile, string) {
   return string;
 }
 
-function applyVars(rawString, args) {
-  if (!args) {
+function applyVars(rawString?: string, args?: Args): string | undefined {
+  if (!rawString || !args) {
     return rawString;
   }
 
@@ -24,7 +31,7 @@ function applyVars(rawString, args) {
   return finalString;
 }
 
-export default function useTranslation(string, args) {
+export default function useTranslation(string?: string, args?: Args): string | undefined {
   const context = useContext(Context);
 
   invariant(context, 'Unable to find TProvider context. Did you wrap your app in <TProvider />?');
@@ -32,6 +39,10 @@ export default function useTranslation(string, args) {
   const { languageFile } = context;
 
   const translatedString = useMemo(() => {
+    if (!string) {
+      return string;
+    }
+
     const rawTranslatedString = getTranslatedString(languageFile, string);
     const stringWithArgs = applyVars(rawTranslatedString, args);
 

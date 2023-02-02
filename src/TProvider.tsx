@@ -4,11 +4,17 @@ import { useMutationObserver } from '@wojtekmaj/react-hooks';
 
 import { getMatchingLocale } from './utils';
 
-export const Context = createContext();
+export type LanguageFile = Record<string, string>;
+
+type GetterOrLanguageFile = (() => Promise<LanguageFile>) | (() => LanguageFile) | LanguageFile;
+
+type LanguageFiles = Record<string, GetterOrLanguageFile>;
+
+export const Context = createContext<{ languageFile?: LanguageFile } | undefined>(undefined);
 
 const isBrowser = typeof document !== 'undefined';
 
-function resolveLanguageFileSync(getterOrLanguageFile) {
+function resolveLanguageFileSync(getterOrLanguageFile?: GetterOrLanguageFile) {
   if (getterOrLanguageFile instanceof Function) {
     const promiseOrLanguageFile = getterOrLanguageFile();
 
@@ -22,7 +28,7 @@ function resolveLanguageFileSync(getterOrLanguageFile) {
   return getterOrLanguageFile;
 }
 
-function resolveLanguageFile(getterOrLanguageFile) {
+function resolveLanguageFile(getterOrLanguageFile?: GetterOrLanguageFile) {
   if (getterOrLanguageFile instanceof Function) {
     const promiseOrLanguageFile = getterOrLanguageFile();
 
@@ -36,14 +42,14 @@ function resolveLanguageFile(getterOrLanguageFile) {
   return Promise.resolve(getterOrLanguageFile);
 }
 
-function getMatchingDocumentLocale(supportedLocales, defaultLocale) {
+function getMatchingDocumentLocale(supportedLocales: string[], defaultLocale: string) {
   if (!isBrowser) {
     return undefined;
   }
 
   const lang = document.documentElement.getAttribute('lang');
 
-  if (lang !== defaultLocale && !supportedLocales.includes(lang)) {
+  if (!lang || (lang !== defaultLocale && !supportedLocales.includes(lang))) {
     return undefined;
   }
 
@@ -55,12 +61,19 @@ const observerConfig = {
   attributes: true,
 };
 
+type TProviderProps = {
+  children: React.ReactNode;
+  defaultLocale?: string;
+  languageFiles?: LanguageFiles;
+  locale?: keyof LanguageFiles;
+};
+
 export default function TProvider({
   children,
   defaultLocale = 'en-US',
   languageFiles = {},
   locale: localeProps,
-}) {
+}: TProviderProps) {
   const supportedLocales = Object.keys(languageFiles);
 
   function getLocaleFromDocument() {
@@ -78,7 +91,8 @@ export default function TProvider({
   }
 
   const locale = getLocaleFromDocumentOrUserPreferences();
-  const [languageFile, setLanguageFile] = useState(resolveLanguageFileSync(languageFiles[locale]));
+  const getterOrLanguageFile = languageFiles[locale];
+  const [languageFile, setLanguageFile] = useState(resolveLanguageFileSync(getterOrLanguageFile));
 
   const onLangAttributeChange = useCallback(() => {
     const nextLocale = getLocaleFromDocumentOrUserPreferences();
@@ -87,7 +101,11 @@ export default function TProvider({
 
   useEffect(onLangAttributeChange, [onLangAttributeChange]);
 
-  useMutationObserver(isBrowser && document.documentElement, observerConfig, onLangAttributeChange);
+  useMutationObserver(
+    isBrowser ? document.documentElement : null,
+    observerConfig,
+    onLangAttributeChange,
+  );
 
   return <Context.Provider value={{ languageFile }}>{children}</Context.Provider>;
 }

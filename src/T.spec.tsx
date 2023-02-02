@@ -6,13 +6,13 @@ import TProvider from './TProvider';
 
 import { muteConsole, restoreConsole } from '../test-utils';
 
-const deLanguageFile = {
+const deLanguageFile: Record<string, string> = {
   'Hello world!': 'Hallo Welt!',
   'Hello {name}!': 'Hallo {name}!',
   'Hello {name} and {other}!': 'Hallo {name} und {other}!',
 };
 
-const esLanguageFile = {
+const esLanguageFile: Record<string, string> = {
   'Hello world!': '¡Hola Mundo!',
   'Hello {name}!': '¡Hola {name}!',
   'Hello {name} and {other}!': '¡Hola {name} y {other}!',
@@ -28,13 +28,13 @@ const syncLanguageFiles = {
   'es-ES': () => esLanguageFile,
 };
 
-const asyncLanguageFiles = {
+const asyncLanguageFiles: Record<string, () => Promise<Record<string, string>>> = {
   'de-DE': () => new Promise((resolve) => resolve(deLanguageFile)),
   'es-ES': () => new Promise((resolve) => resolve(esLanguageFile)),
 };
 
-jest.mock('lodash.memoize', () => (fn) => fn);
-jest.mock('lodash.once', () => (fn) => fn);
+jest.mock('lodash.memoize', () => (fn: () => void) => fn);
+jest.mock('lodash.once', () => (fn: () => void) => fn);
 
 describe('<T /> component', () => {
   beforeEach(() => {
@@ -44,7 +44,7 @@ describe('<T /> component', () => {
   it('throws when rendered without TProvider context', () => {
     muteConsole();
 
-    expect(() => render(<T />)).toThrowError();
+    expect(() => render(<T>Hello world!</T>)).toThrowError();
 
     restoreConsole();
   });

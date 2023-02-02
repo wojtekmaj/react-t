@@ -1,13 +1,13 @@
 import once from 'lodash.once';
 import { getUserLocales } from 'get-user-locale';
 
-function altLanguageCode(languageCode) {
+function altLanguageCode(languageCode: string) {
   return languageCode.includes('-')
     ? languageCode.split('-')[0]
     : `${languageCode}-${languageCode.toUpperCase()}`;
 }
 
-function getMatchingSupportedLocale(userLocale, supportedLocales) {
+function getMatchingSupportedLocale(userLocale: string, supportedLocales: string[]) {
   return supportedLocales.find(
     (el) =>
       // First, try and find exact match
@@ -19,7 +19,7 @@ function getMatchingSupportedLocale(userLocale, supportedLocales) {
   );
 }
 
-function getMatchingLocaleInternal(supportedLocales) {
+function getMatchingLocaleInternal(supportedLocales: string[]) {
   const userLocales = getUserLocales();
 
   let matchingLocale;
