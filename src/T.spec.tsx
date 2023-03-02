@@ -1,5 +1,6 @@
 import React from 'react';
 import { act, render } from '@testing-library/react';
+import { getUserLocales } from 'get-user-locale';
 
 import T from './T';
 import TProvider from './TProvider';
@@ -33,8 +34,17 @@ const asyncLanguageFiles: Record<string, () => Promise<Record<string, string>>> 
   'es-ES': () => new Promise((resolve) => resolve(esLanguageFile)),
 };
 
-jest.mock('lodash.memoize', () => (fn: () => void) => fn);
 jest.mock('lodash.once', () => (fn: () => void) => fn);
+
+jest.mock('get-user-locale', () => ({
+  getUserLocales: jest.fn(),
+}));
+
+jest
+  .mocked(getUserLocales)
+  .mockImplementation(() =>
+    Array.from(new Set([...navigator.languages, navigator.language, 'en-US'])),
+  );
 
 describe('<T /> component', () => {
   beforeEach(() => {
