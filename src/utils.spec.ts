@@ -1,14 +1,15 @@
+import { describe, expect, it, vi } from 'vitest';
 import { getUserLocales } from 'get-user-locale';
 
 import { getMatchingLocale } from './utils';
 
-jest.mock('lodash.once', () => (fn: () => void) => fn);
+vi.mock('lodash.once', () => ({ default: (fn: () => void) => fn }));
 
-jest.mock('get-user-locale', () => ({
-  getUserLocales: jest.fn(),
+vi.mock('get-user-locale', () => ({
+  getUserLocales: vi.fn(),
 }));
 
-const mockedGetUserLocales = jest.mocked(getUserLocales);
+const mockedGetUserLocales = vi.mocked(getUserLocales);
 
 describe('getMatchingLocale()', () => {
   it.each`
