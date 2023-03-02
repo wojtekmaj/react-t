@@ -1,3 +1,4 @@
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import React from 'react';
 import { act, render } from '@testing-library/react';
 import { getUserLocales } from 'get-user-locale';
@@ -34,17 +35,15 @@ const asyncLanguageFiles: Record<string, () => Promise<Record<string, string>>> 
   'es-ES': () => new Promise((resolve) => resolve(esLanguageFile)),
 };
 
-jest.mock('lodash.once', () => (fn: () => void) => fn);
+vi.mock('lodash.once', () => ({ default: (fn: () => void) => fn }));
 
-jest.mock('get-user-locale', () => ({
-  getUserLocales: jest.fn(),
+vi.mock('get-user-locale', () => ({
+  getUserLocales: vi.fn(),
 }));
 
-jest
-  .mocked(getUserLocales)
-  .mockImplementation(() =>
-    Array.from(new Set([...navigator.languages, navigator.language, 'en-US'])),
-  );
+vi.mocked(getUserLocales).mockImplementation(() =>
+  Array.from(new Set([...navigator.languages, navigator.language, 'en-US'])),
+);
 
 describe('<T /> component', () => {
   beforeEach(() => {
@@ -252,7 +251,7 @@ describe('<T /> component', () => {
   it('returns original phrase if browser language is given but no languageFiles were given', () => {
     muteConsole();
 
-    const languageGetter = jest.spyOn(window.navigator, 'language', 'get');
+    const languageGetter = vi.spyOn(window.navigator, 'language', 'get');
     languageGetter.mockReturnValue('de-DE');
 
     const { getByText } = render(
@@ -269,7 +268,7 @@ describe('<T /> component', () => {
   });
 
   it('returns translated phrase if browser language is given', async () => {
-    const languageGetter = jest.spyOn(window.navigator, 'language', 'get');
+    const languageGetter = vi.spyOn(window.navigator, 'language', 'get');
     languageGetter.mockReturnValue('de-DE');
 
     const { findByText } = render(
