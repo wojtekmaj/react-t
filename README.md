@@ -37,7 +37,6 @@ Add React-T to your project by executing `npm install @wojtekmaj/react-t` or `ya
 Here's an example of basic setup:
 
 ```js
-import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { TProvider } from '@wojtekmaj/react-t';
 
@@ -59,7 +58,6 @@ createRoot(document.getElementById('react-root')).render(
 Here's an example of basic usage:
 
 ```js
-import React from 'react';
 import T from '@wojtekmaj/react-t';
 
 function MyComponent() {
