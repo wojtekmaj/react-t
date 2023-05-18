@@ -61,7 +61,7 @@ const observerConfig = {
   attributes: true,
 };
 
-type TProviderProps = {
+export type TProviderProps = {
   children: React.ReactNode;
   defaultLocale?: string;
   languageFiles?: LanguageFiles;

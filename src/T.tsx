@@ -5,7 +5,7 @@ import useTranslation from './useTranslation';
 
 type Args = Record<string, string>;
 
-type TProps = {
+export type TProps = {
   children?: string;
 } & Args;
 
