@@ -8,13 +8,15 @@ import TProvider from './TProvider';
 
 import { muteConsole, restoreConsole } from '../test-utils';
 
-const deLanguageFile: Record<string, string> = {
+import type { LanguageFile, LanguageFileModule } from './types';
+
+const deLanguageFile: LanguageFile = {
   'Hello world!': 'Hallo Welt!',
   'Hello {name}!': 'Hallo {name}!',
   'Hello {name} and {other}!': 'Hallo {name} und {other}!',
 };
 
-const esLanguageFile: Record<string, string> = {
+const esLanguageFile: LanguageFile = {
   'Hello world!': '¡Hola Mundo!',
   'Hello {name}!': '¡Hola {name}!',
   'Hello {name} and {other}!': '¡Hola {name} y {other}!',
@@ -30,9 +32,14 @@ const syncLanguageFiles = {
   'es-ES': () => esLanguageFile,
 };
 
-const asyncLanguageFiles: Record<string, () => Promise<Record<string, string>>> = {
+const asyncLanguageFiles: Record<string, () => Promise<LanguageFile>> = {
   'de-DE': () => new Promise((resolve) => resolve(deLanguageFile)),
   'es-ES': () => new Promise((resolve) => resolve(esLanguageFile)),
+};
+
+const asyncLanguageFilesEsm: Record<string, () => Promise<LanguageFileModule>> = {
+  'de-DE': () => new Promise((resolve) => resolve({ default: deLanguageFile })),
+  'es-ES': () => new Promise((resolve) => resolve({ default: esLanguageFile })),
 };
 
 vi.mock('lodash.once', () => ({ default: (fn: () => void) => fn }));
@@ -205,6 +212,17 @@ describe('<T /> component', () => {
 
     const { findByText } = render(
       <TProvider languageFiles={asyncLanguageFiles}>
+        <T>Hello world!</T>
+      </TProvider>,
+    );
+
+    expect(await findByText('Hallo Welt!')).toBeInTheDocument();
+  });
+  it('returns translated phrase if html lang is given and asynchronous functions returning language files as ESM modules are given', async () => {
+    document.documentElement.setAttribute('lang', 'de-DE');
+
+    const { findByText } = render(
+      <TProvider languageFiles={asyncLanguageFilesEsm}>
         <T>Hello world!</T>
       </TProvider>,
     );

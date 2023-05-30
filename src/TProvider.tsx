@@ -1,20 +1,28 @@
-import React, { createContext, useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useMutationObserver } from '@wojtekmaj/react-hooks';
 
+import TContext from './TContext';
+
 import { getMatchingLocale } from './utils';
 
-export type LanguageFile = Record<string, string>;
-
-type GetterOrLanguageFile = (() => Promise<LanguageFile>) | (() => LanguageFile) | LanguageFile;
-
-type LanguageFiles = Record<string, GetterOrLanguageFile>;
-
-export const Context = createContext<{ languageFile?: LanguageFile } | undefined>(undefined);
+import type {
+  Module,
+  LanguageFile,
+  LanguageFileModule,
+  GetterOrLanguageFile,
+  LanguageFiles,
+} from './types';
 
 const isBrowser = typeof document !== 'undefined';
 
-function resolveLanguageFileSync(getterOrLanguageFile?: GetterOrLanguageFile) {
+function resolveModule<T extends object | undefined>(module: Module<T>): T {
+  return module && 'default' in module ? module.default : module;
+}
+
+function resolveLanguageFileModuleSync(
+  getterOrLanguageFile?: GetterOrLanguageFile,
+): LanguageFileModule | undefined {
   if (getterOrLanguageFile instanceof Function) {
     const promiseOrLanguageFile = getterOrLanguageFile();
 
@@ -28,7 +36,15 @@ function resolveLanguageFileSync(getterOrLanguageFile?: GetterOrLanguageFile) {
   return getterOrLanguageFile;
 }
 
-function resolveLanguageFile(getterOrLanguageFile?: GetterOrLanguageFile) {
+function resolveLanguageFileSync(
+  getterOrLanguageFile?: GetterOrLanguageFile,
+): LanguageFile | undefined {
+  return resolveModule(resolveLanguageFileModuleSync(getterOrLanguageFile));
+}
+
+function resolveLanguageFileModule(
+  getterOrLanguageFile?: GetterOrLanguageFile,
+): Promise<LanguageFileModule | undefined> {
   if (getterOrLanguageFile instanceof Function) {
     const promiseOrLanguageFile = getterOrLanguageFile();
 
@@ -40,6 +56,12 @@ function resolveLanguageFile(getterOrLanguageFile?: GetterOrLanguageFile) {
   }
 
   return Promise.resolve(getterOrLanguageFile);
+}
+
+function resolveLanguageFile(
+  getterOrLanguageFile?: GetterOrLanguageFile,
+): Promise<LanguageFile | undefined> {
+  return resolveLanguageFileModule(getterOrLanguageFile).then(resolveModule);
 }
 
 function getMatchingDocumentLocale(supportedLocales: string[], defaultLocale: string) {
@@ -107,7 +129,7 @@ export default function TProvider({
     onLangAttributeChange,
   );
 
-  return <Context.Provider value={{ languageFile }}>{children}</Context.Provider>;
+  return <TContext.Provider value={{ languageFile }}>{children}</TContext.Provider>;
 }
 
 TProvider.propTypes = {
