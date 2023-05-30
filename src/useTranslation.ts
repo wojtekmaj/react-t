@@ -1,54 +1,122 @@
-import { useContext, useMemo } from 'react';
+import { cloneElement, isValidElement, useContext } from 'react';
 import invariant from 'tiny-invariant';
 
 import TContext from './TContext';
 
-import type { LanguageFile } from './types';
+import type { Args, ArgsOfNodes, ArgsOfStringsOrNumbers, LanguageFile } from './types';
 
-type Args = Record<string, string>;
+function getRawTranslatedString(string: string, languageFile: LanguageFile | undefined): string {
+  if (languageFile) {
+    const rawTranslatedString = languageFile[string];
 
-function getTranslatedString(
-  languageFile: LanguageFile | undefined,
-  string: string,
-): string | undefined {
-  if (languageFile && typeof languageFile[string] === 'string') {
-    return languageFile[string];
+    if (rawTranslatedString) {
+      return rawTranslatedString;
+    }
   }
 
   return string;
 }
 
-function applyVars(rawString?: string, args?: Args): string | undefined {
-  if (!rawString || !args) {
-    return rawString;
+function applyArg(
+  string: string,
+  argName: string,
+  replacement: string | number,
+  keyPrefix: string,
+): string;
+function applyArg(
+  string: string,
+  argName: string,
+  replacement: React.ReactNode,
+  keyPrefix: string,
+): React.ReactNode[];
+function applyArg(
+  string: string,
+  argName: string,
+  replacement: string | number | React.ReactNode,
+  keyPrefix = '',
+): string | React.ReactNode[] {
+  const placeholder = `{${argName}}`;
+  const regExp = new RegExp(placeholder, 'g');
+
+  if (typeof replacement === 'string' || typeof replacement === 'number') {
+    const result = string.replace(regExp, `${replacement}`);
+
+    return result;
   }
 
-  let finalString = rawString;
-  Object.entries(args).forEach(([key, value]) => {
-    finalString = finalString.replace(new RegExp(`\\{${key}\\}`, 'g'), value);
-  });
+  const splitString = string.split(placeholder);
 
-  return finalString;
+  const initialValue: React.ReactNode[] = [];
+
+  return splitString.reduce((arr, element, index) => {
+    const isLast = index === splitString.length - 1;
+
+    if (isLast) {
+      return [...arr, element];
+    }
+
+    return [
+      ...arr,
+      element,
+      isValidElement(replacement)
+        ? // eslint-disable-next-line react/no-array-index-key
+          cloneElement(replacement, { key: `${keyPrefix}-${index}` })
+        : replacement,
+    ];
+  }, initialValue);
 }
 
-export default function useTranslation(string?: string, args?: Args): string | undefined {
+function applyArgs(string: string, args: ArgsOfStringsOrNumbers): string;
+function applyArgs(string: string, args: ArgsOfNodes): React.ReactNode[];
+function applyArgs(rawString: string, args: Args): string | React.ReactNode[] {
+  let result: React.ReactNode[] = [rawString];
+
+  for (const [argName, replacement] of Object.entries(args || {})) {
+    result = result.flatMap((string, index) => {
+      return typeof string === 'string'
+        ? applyArg(string, argName, replacement, `${index}`)
+        : string;
+    });
+  }
+
+  return result;
+}
+
+export default function useTranslation(string?: undefined, args?: undefined): undefined;
+export default function useTranslation(string: undefined, args?: Args): undefined;
+export default function useTranslation<T extends string | undefined>(
+  string: T,
+  args?: undefined,
+): T extends string ? string : undefined;
+export default function useTranslation<T extends string | undefined>(
+  string: T,
+  args: ArgsOfStringsOrNumbers,
+): T extends string ? string : undefined;
+export default function useTranslation<T extends string | undefined>(
+  string: T,
+  args: ArgsOfNodes,
+): T extends string ? React.ReactNode[] : undefined;
+export default function useTranslation(
+  string?: string,
+  args?: Args,
+): string | React.ReactNode[] | undefined {
   const context = useContext(TContext);
 
   invariant(context, 'Unable to find TProvider context. Did you wrap your app in <TProvider />?');
 
   const { languageFile } = context;
 
-  const translatedString = useMemo(() => {
-    if (!string) {
-      return string;
-    }
+  if (!string) {
+    return string;
+  }
 
-    const rawTranslatedString = getTranslatedString(languageFile, string);
-    const stringWithArgs = applyVars(rawTranslatedString, args);
+  const rawTranslatedString = getRawTranslatedString(string, languageFile);
 
-    return stringWithArgs;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [languageFile, string, JSON.stringify(args)]);
+  if (!args) {
+    return rawTranslatedString;
+  }
 
-  return translatedString;
+  const stringWithArgs = applyArgs(rawTranslatedString, args);
+
+  return stringWithArgs;
 }

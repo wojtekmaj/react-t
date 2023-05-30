@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import useTranslation from './useTranslation';
 
-type Args = Record<string, string>;
+import type { Args } from './types';
 
 export type TProps = {
   children?: string;
@@ -11,6 +11,7 @@ export type TProps = {
 
 export default function T({ children, ...args }: TProps) {
   const translatedChildren = useTranslation(children, args);
+
   return translatedChildren === undefined ? null : <>{translatedChildren}</>;
 }
 

@@ -1,3 +1,9 @@
+export type ArgsOfStringsOrNumbers = Record<string, string | number>;
+
+export type ArgsOfNodes = Record<string, React.ReactNode>;
+
+export type Args = ArgsOfStringsOrNumbers | ArgsOfNodes;
+
 export type Module<T> =
   | T
   | {

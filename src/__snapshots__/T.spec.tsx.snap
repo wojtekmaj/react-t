@@ -1,0 +1,21 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`<T /> component > returns original phrase with ReactNode variable given no language files 1`] = `
+<div>
+  Hello 
+  <strong>
+    John
+  </strong>
+  !
+</div>
+`;
+
+exports[`<T /> component > returns translated phrase with ReactNode variable if locale prop is given 1`] = `
+<div>
+  Hallo 
+  <strong>
+    John
+  </strong>
+  !
+</div>
+`;

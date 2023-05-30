@@ -97,6 +97,16 @@ describe('<T /> component', () => {
     expect(getByText('Hello John!')).toBeInTheDocument();
   });
 
+  it('returns original phrase with ReactNode variable given no language files', () => {
+    const { container } = render(
+      <TProvider>
+        <T name={<strong>John</strong>}>{'Hello {name}!'}</T>
+      </TProvider>,
+    );
+
+    expect(container).toMatchSnapshot();
+  });
+
   it('returns original phrase with variable placeholder given no language files and no args', () => {
     const { getByText } = render(
       <TProvider>
@@ -179,6 +189,18 @@ describe('<T /> component', () => {
     );
 
     expect(getByText('Hallo John!')).toBeInTheDocument();
+  });
+
+  it('returns translated phrase with ReactNode variable if locale prop is given', () => {
+    document.documentElement.setAttribute('lang', 'de-DE');
+
+    const { container } = render(
+      <TProvider languageFiles={languageFiles}>
+        <T name={<strong>John</strong>}>{'Hello {name}!'}</T>
+      </TProvider>,
+    );
+
+    expect(container).toMatchSnapshot();
   });
 
   it('returns translated phrase with variable placeholder if locale prop is given given no args', () => {

@@ -1,9 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import T, { useTranslation } from '@wojtekmaj/react-t/src';
+import { useTick } from '@wojtekmaj/react-hooks';
 
 import LocaleOptions from './LocaleOptions';
 
 import './Test.css';
+
+function FancyJohn() {
+  const tick = useTick();
+  const oneTwo = tick % 2 === 0;
+
+  return (
+    <strong>
+      {oneTwo ? '✨' : '🌟'} John {oneTwo ? '🌟' : '✨'}
+    </strong>
+  );
+}
 
 export default function Test() {
   const [locale, setLocale] = useState<string>();
@@ -17,6 +29,7 @@ export default function Test() {
   const stringFour = useTranslation('Hello {name}! Nice to meet you {name}!', {
     name: 'John',
   });
+  const stringFive = useTranslation('Hello {name}!', { name: <FancyJohn /> });
 
   useEffect(() => {
     const html = document.documentElement;
@@ -53,6 +66,9 @@ export default function Test() {
           <p>
             <T name="John">{`Hello {name}! Nice to meet you {name}!`}</T>
           </p>
+          <p>
+            <T name={<FancyJohn />}>{`Hello {name}!`}</T>
+          </p>
           <h2>
             Using <code>useTranslation</code> hook
           </h2>
@@ -60,6 +76,7 @@ export default function Test() {
           <p>{stringTwo}</p>
           <p>{stringThree}</p>
           <p>{stringFour}</p>
+          <p>{stringFive}</p>
         </main>
       </div>
     </div>
