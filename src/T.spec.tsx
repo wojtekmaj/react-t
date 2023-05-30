@@ -14,12 +14,14 @@ const deLanguageFile: LanguageFile = {
   'Hello world!': 'Hallo Welt!',
   'Hello {name}!': 'Hallo {name}!',
   'Hello {name} and {other}!': 'Hallo {name} und {other}!',
+  'Hello {name}! Nice to meet you {name}!': 'Hallo {name}! Schön, dich zu treffen {name}!',
 };
 
 const esLanguageFile: LanguageFile = {
   'Hello world!': '¡Hola Mundo!',
   'Hello {name}!': '¡Hola {name}!',
   'Hello {name} and {other}!': '¡Hola {name} y {other}!',
+  'Hello {name}! Nice to meet you {name}!': '¡Hola {name}! ¡Encantado de conocerte {name}!',
 };
 
 const languageFiles = {
@@ -117,6 +119,16 @@ describe('<T /> component', () => {
     expect(getByText('Hello John and Elisabeth!')).toBeInTheDocument();
   });
 
+  it('returns original phrase with one variable used multiple times given no language files', () => {
+    const { getByText } = render(
+      <TProvider>
+        <T name="John">{'Hello {name}! Nice to meet you {name}!'}</T>
+      </TProvider>,
+    );
+
+    expect(getByText('Hello John! Nice to meet you John!')).toBeInTheDocument();
+  });
+
   it('returns original phrase if html lang is given but no languageFiles were given', () => {
     muteConsole();
 
@@ -193,6 +205,20 @@ describe('<T /> component', () => {
     );
 
     expect(getByText('Hallo John und Elisabeth!')).toBeInTheDocument();
+  });
+
+  it('returns translated phrase with one variable used multiple times if locale prop is given', () => {
+    document.documentElement.setAttribute('lang', 'de-DE');
+
+    const { getByText } = render(
+      <TProvider languageFiles={languageFiles}>
+        <T name="John" other="Elisabeth">
+          {'Hello {name}! Nice to meet you {name}!'}
+        </T>
+      </TProvider>,
+    );
+
+    expect(getByText('Hallo John! Schön, dich zu treffen John!')).toBeInTheDocument();
   });
 
   it('returns translated phrase if html lang is given and synchronous functions returning language files are given', async () => {

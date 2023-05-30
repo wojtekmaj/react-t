@@ -14,6 +14,9 @@ export default function Test() {
     name: 'John',
     other: 'Elisabeth',
   });
+  const stringFour = useTranslation('Hello {name}! Nice to meet you {name}!', {
+    name: 'John',
+  });
 
   useEffect(() => {
     const html = document.documentElement;
@@ -47,12 +50,16 @@ export default function Test() {
           <p>
             <T name="John" other="Elisabeth">{`Hello {name} and {other}!`}</T>
           </p>
+          <p>
+            <T name="John">{`Hello {name}! Nice to meet you {name}!`}</T>
+          </p>
           <h2>
             Using <code>useTranslation</code> hook
           </h2>
           <p>{stringOne}</p>
           <p>{stringTwo}</p>
           <p>{stringThree}</p>
+          <p>{stringFour}</p>
         </main>
       </div>
     </div>

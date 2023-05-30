@@ -25,7 +25,7 @@ function applyVars(rawString?: string, args?: Args): string | undefined {
 
   let finalString = rawString;
   Object.entries(args).forEach(([key, value]) => {
-    finalString = finalString.replace(`{${key}}`, value);
+    finalString = finalString.replace(new RegExp(`\\{${key}\\}`, 'g'), value);
   });
 
   return finalString;

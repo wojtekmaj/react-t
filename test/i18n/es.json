@@ -1,5 +1,6 @@
 {
   "Hello world!": "¡Hola Mundo!",
   "Hello {name}!": "¡Hola {name}!",
-  "Hello {name} and {other}!": "¡Hola {name} y {other}!"
+  "Hello {name} and {other}!": "¡Hola {name} y {other}!",
+  "Hello {name}! Nice to meet you {name}!": "¡Hola {name}! ¡Encantado de conocerte {name}!"
 }
