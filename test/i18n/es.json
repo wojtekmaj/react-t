@@ -1,0 +1,5 @@
+{
+  "Hello world!": "¡Hola Mundo!",
+  "Hello {name}!": "¡Hola {name}!",
+  "Hello {name} and {other}!": "¡Hola {name} y {other}!"
+}
