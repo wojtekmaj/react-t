@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 
-import TContext from './TContext';
+import TContext from './TContext.js';
 
-import { resolveLanguageFile, resolveLanguageFileSync } from './utils/resolver';
+import { resolveLanguageFile, resolveLanguageFileSync } from './utils/resolver.js';
 
-import useLocale from './hooks/useLocale';
+import useLocale from './hooks/useLocale.js';
 
-import { LanguageFile, LanguageFiles } from './shared/types';
+import { LanguageFile, LanguageFiles } from './shared/types.js';
 
 export type TProviderProps<T extends LanguageFiles> = {
   children: React.ReactNode;

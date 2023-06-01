@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { getMatchingLocale } from './locale';
+import { getMatchingLocale } from './locale.js';
 
 describe('getMatchingLocale()', () => {
   it.each`

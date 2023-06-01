@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import T, { TProvider, useTranslation } from '@wojtekmaj/react-t/src';
+import T, { TProvider, useTranslation } from '@wojtekmaj/react-t';
 import { useTick } from '@wojtekmaj/react-hooks';
 
-import LocaleOptions from './LocaleOptions';
-import PassingOptions from './PassingOptions';
+import LocaleOptions from './LocaleOptions.js';
+import PassingOptions from './PassingOptions.js';
 
 import './Test.css';
 
-import { languageFiles } from './i18n';
+import { languageFiles } from './i18n/index.js';
 
-import type { PassMethod } from './shared/types';
+import type { PassMethod } from './shared/types.js';
 
 function FancyJohn() {
   const tick = useTick();

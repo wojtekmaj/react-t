@@ -1,9 +1,9 @@
 import { cloneElement, isValidElement, useContext } from 'react';
 import invariant from 'tiny-invariant';
 
-import TContext from './TContext';
+import TContext from './TContext.js';
 
-import type { Args, ArgsOfNodes, ArgsOfStringsOrNumbers, LanguageFile } from './shared/types';
+import type { Args, ArgsOfNodes, ArgsOfStringsOrNumbers, LanguageFile } from './shared/types.js';
 
 function getRawTranslatedString(string: string, languageFile: LanguageFile | undefined): string {
   if (languageFile) {

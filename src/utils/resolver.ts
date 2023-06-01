@@ -3,7 +3,7 @@ import type {
   LanguageFile,
   LanguageFileModule,
   GetterOrLanguageFile,
-} from '../shared/types';
+} from '../shared/types.js';
 
 function resolveModule<T extends object | undefined>(module: Module<T>): T {
   return module && 'default' in module ? module.default : module;

@@ -3,12 +3,12 @@ import React from 'react';
 import { act, render } from '@testing-library/react';
 import { getUserLocales } from 'get-user-locale';
 
-import T from './T';
-import TProvider from './TProvider';
+import T from './T.js';
+import TProvider from './TProvider.js';
 
-import { muteConsole, restoreConsole } from '../test-utils';
+import { muteConsole, restoreConsole } from '../test-utils.js';
 
-import type { LanguageFile, LanguageFileModule } from './shared/types';
+import type { LanguageFile, LanguageFileModule } from './shared/types.js';
 
 const deLanguageFile: LanguageFile = {
   'Hello world!': 'Hallo Welt!',

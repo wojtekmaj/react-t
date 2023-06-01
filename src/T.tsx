@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import useTranslation from './useTranslation';
+import useTranslation from './useTranslation.js';
 
-import type { Args } from './shared/types';
+import type { Args } from './shared/types.js';
 
 export type TProps = {
   children?: string;
