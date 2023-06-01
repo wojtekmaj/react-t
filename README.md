@@ -75,7 +75,7 @@ React-T detects locale to use by going through the list of possible sources:
 
 1. `locale` prop provided to `<TProvider />`
 2. `<html lang="…">` attribute
-3. List of preferred user locales created using [`get-user-locale`](https://github.com/wojtekmaj/get-user-locale)
+3. List of preferred user locales obtained using [`get-user-locale`](https://github.com/wojtekmaj/get-user-locale)
 
 On each step, React-T checks if a given locale is supported (provided in `languageFiles`, or defined as `defaultLocale`). If a given locale is supported, it'll use it. If not, it'll move to the next step on the list.
 
