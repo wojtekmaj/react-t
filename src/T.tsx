@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import useTranslation from './useTranslation';
 
-import type { Args } from './types';
+import type { Args } from './shared/types';
 
 export type TProps = {
   children?: string;

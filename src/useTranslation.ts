@@ -3,7 +3,7 @@ import invariant from 'tiny-invariant';
 
 import TContext from './TContext';
 
-import type { Args, ArgsOfNodes, ArgsOfStringsOrNumbers, LanguageFile } from './types';
+import type { Args, ArgsOfNodes, ArgsOfStringsOrNumbers, LanguageFile } from './shared/types';
 
 function getRawTranslatedString(string: string, languageFile: LanguageFile | undefined): string {
   if (languageFile) {

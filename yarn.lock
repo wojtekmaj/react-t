@@ -518,15 +518,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/lodash.once@npm:^4.1.7":
-  version: 4.1.7
-  resolution: "@types/lodash.once@npm:4.1.7"
-  dependencies:
-    "@types/lodash": "*"
-  checksum: ecca82deda7b34012882542d4a95b896263faff14e90ba4651555193e504e8df8b0b2b2af5150e9048bbb3a968ca7ab02f3cee58118fedbd6460d16d97a5c00f
-  languageName: node
-  linkType: hard
-
 "@types/lodash@npm:*":
   version: 4.14.192
   resolution: "@types/lodash@npm:4.14.192"
@@ -813,14 +804,12 @@ __metadata:
   dependencies:
     "@testing-library/jest-dom": ^5.15.0
     "@testing-library/react": ^14.0.0
-    "@types/lodash.once": ^4.1.7
     "@wojtekmaj/react-hooks": ^1.16.2
     eslint: ^8.26.0
     eslint-config-wojtekmaj: ^0.8.4
     get-user-locale: ^2.2.1
     husky: ^8.0.0
     jsdom: ^21.1.0
-    lodash.once: ^4.0.0
     prettier: ^2.7.0
     pretty-quick: ^3.1.0
     prop-types: ^15.6.0
@@ -3382,13 +3371,6 @@ __metadata:
   version: 4.6.2
   resolution: "lodash.merge@npm:4.6.2"
   checksum: ad580b4bdbb7ca1f7abf7e1bce63a9a0b98e370cf40194b03380a46b4ed799c9573029599caebc1b14e3f24b111aef72b96674a56cfa105e0f5ac70546cdc005
-  languageName: node
-  linkType: hard
-
-"lodash.once@npm:^4.0.0":
-  version: 4.1.1
-  resolution: "lodash.once@npm:4.1.1"
-  checksum: d768fa9f9b4e1dc6453be99b753906f58990e0c45e7b2ca5a3b40a33111e5d17f6edf2f768786e2716af90a8e78f8f91431ab8435f761fef00f9b0c256f6d245
   languageName: node
   linkType: hard
 

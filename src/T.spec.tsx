@@ -8,7 +8,7 @@ import TProvider from './TProvider';
 
 import { muteConsole, restoreConsole } from '../test-utils';
 
-import type { LanguageFile, LanguageFileModule } from './types';
+import type { LanguageFile, LanguageFileModule } from './shared/types';
 
 const deLanguageFile: LanguageFile = {
   'Hello world!': 'Hallo Welt!',
@@ -43,8 +43,6 @@ const asyncLanguageFilesEsm: Record<string, () => Promise<LanguageFileModule>> =
   'de-DE': () => new Promise((resolve) => resolve({ default: deLanguageFile })),
   'es-ES': () => new Promise((resolve) => resolve({ default: esLanguageFile })),
 };
-
-vi.mock('lodash.once', () => ({ default: (fn: () => void) => fn }));
 
 vi.mock('get-user-locale', () => ({
   getUserLocales: vi.fn(),

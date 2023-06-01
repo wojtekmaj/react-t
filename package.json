@@ -32,10 +32,8 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@types/lodash.once": "^4.1.7",
     "@wojtekmaj/react-hooks": "^1.16.2",
     "get-user-locale": "^2.2.1",
-    "lodash.once": "^4.0.0",
     "prop-types": "^15.6.0",
     "tiny-invariant": "^1.0.0"
   },

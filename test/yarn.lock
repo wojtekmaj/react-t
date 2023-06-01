@@ -571,15 +571,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/lodash.once@npm:^4.1.7":
-  version: 4.1.7
-  resolution: "@types/lodash.once@npm:4.1.7"
-  dependencies:
-    "@types/lodash": "*"
-  checksum: ecca82deda7b34012882542d4a95b896263faff14e90ba4651555193e504e8df8b0b2b2af5150e9048bbb3a968ca7ab02f3cee58118fedbd6460d16d97a5c00f
-  languageName: node
-  linkType: hard
-
 "@types/lodash@npm:*":
   version: 4.14.195
   resolution: "@types/lodash@npm:4.14.195"
@@ -653,10 +644,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@wojtekmaj/react-t@portal:../::locator=react-t-test-page%40workspace%3A."
   dependencies:
-    "@types/lodash.once": ^4.1.7
     "@wojtekmaj/react-hooks": ^1.16.2
     get-user-locale: ^2.2.1
-    lodash.once: ^4.0.0
     prop-types: ^15.6.0
     tiny-invariant: ^1.0.0
   peerDependencies:
@@ -1337,13 +1326,6 @@ __metadata:
   version: 4.1.2
   resolution: "lodash.memoize@npm:4.1.2"
   checksum: 9ff3942feeccffa4f1fafa88d32f0d24fdc62fd15ded5a74a5f950ff5f0c6f61916157246744c620173dddf38d37095a92327d5fd3861e2063e736a5c207d089
-  languageName: node
-  linkType: hard
-
-"lodash.once@npm:^4.0.0":
-  version: 4.1.1
-  resolution: "lodash.once@npm:4.1.1"
-  checksum: d768fa9f9b4e1dc6453be99b753906f58990e0c45e7b2ca5a3b40a33111e5d17f6edf2f768786e2716af90a8e78f8f91431ab8435f761fef00f9b0c256f6d245
   languageName: node
   linkType: hard
 
