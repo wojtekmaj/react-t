@@ -10,15 +10,26 @@ import useLocale from './hooks/useLocale';
 import { LanguageFile, LanguageFiles } from './shared/types';
 
 export type TProviderProps<T extends LanguageFiles> = {
-  children: React.ReactNode;
-  defaultLocale?: Extract<keyof T, string>;
-  languageFiles?: LanguageFiles;
-  locale?: Extract<keyof T, string>;
-};
+  children?: React.ReactNode;
+} & (
+  | {
+      defaultLocale?: never;
+      languageFile?: LanguageFile;
+      languageFiles?: never;
+      locale?: never;
+    }
+  | {
+      defaultLocale?: Extract<keyof T, string>;
+      languageFile?: never;
+      languageFiles?: LanguageFiles;
+      locale?: Extract<keyof T, string>;
+    }
+);
 
 export default function TProvider<T extends LanguageFiles>({
   children,
   defaultLocale,
+  languageFile: propsLanguageFile,
   languageFiles,
   locale: propsLocale,
 }: TProviderProps<T>) {
@@ -27,7 +38,8 @@ export default function TProvider<T extends LanguageFiles>({
   const locale = useLocale({ defaultLocale, propsLocale, supportedLocales });
 
   const getterOrLanguageFile =
-    languageFiles && locale && languageFiles[locale] ? languageFiles[locale] : undefined;
+    propsLanguageFile ||
+    (languageFiles && locale && languageFiles[locale] ? languageFiles[locale] : undefined);
 
   const [languageFile, setLanguageFile] = useState<LanguageFile | undefined>(
     resolveLanguageFileSync(getterOrLanguageFile),
@@ -40,9 +52,12 @@ export default function TProvider<T extends LanguageFiles>({
   return <TContext.Provider value={{ languageFile }}>{children}</TContext.Provider>;
 }
 
+const isLanguageFile = PropTypes.oneOfType([PropTypes.object, PropTypes.func]);
+
 TProvider.propTypes = {
   children: PropTypes.node,
   defaultLocale: PropTypes.string,
-  languageFiles: PropTypes.objectOf(PropTypes.oneOfType([PropTypes.object, PropTypes.func])),
+  languageFile: isLanguageFile,
+  languageFiles: PropTypes.objectOf(isLanguageFile),
   locale: PropTypes.string,
 };

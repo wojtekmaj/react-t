@@ -369,4 +369,14 @@ describe('<T /> component', () => {
 
     expect(await findByText('Hallo Welt!')).toBeInTheDocument();
   });
+
+  it('returns translated phrase if languageFile prop is given', () => {
+    const { getByText } = render(
+      <TProvider languageFile={deLanguageFile}>
+        <T>Hello world!</T>
+      </TProvider>,
+    );
+
+    expect(getByText('Hallo Welt!')).toBeInTheDocument();
+  });
 });
