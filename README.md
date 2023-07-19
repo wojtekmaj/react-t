@@ -15,7 +15,7 @@ Simple translation module for React applications.
   }
   ```
   and adding `languageFiles` to `<TProvider />`, like this:
-  ```js
+  ```tsx
   <TProvider languageFiles={{ 'de-DE': () => import('./de-DE.json') }} />
   ```
 - Use by adding `import T from '@wojtekmaj/react-t'` and wrapping your text in `<T />`.
@@ -36,7 +36,7 @@ Add React-T to your project by executing `npm install @wojtekmaj/react-t` or `ya
 
 Here's an example of basic setup:
 
-```js
+```ts
 import { createRoot } from 'react-dom/client';
 import { TProvider } from '@wojtekmaj/react-t';
 
@@ -57,7 +57,7 @@ createRoot(document.getElementById('react-root')).render(
 
 Here's an example of basic usage:
 
-```js
+```ts
 import T from '@wojtekmaj/react-t';
 
 function MyComponent() {
@@ -90,19 +90,19 @@ Wrap your app in `<TProvider />`.
 Define `languageFiles` prop that contains an object of:
 
 - functions that return promises:
-  ```js
+  ```ts
   {
     'de-DE': () => import('./myLanguageFile.json'),
   }
   ```
 - functions that return language files:
-  ```js
+  ```ts
   {
     'de-DE': () => myLanguageFile,
   }
   ```
 - language files:
-  ```js
+  ```ts
   {
     'de-DE': myLanguageFile,
   }
@@ -112,13 +112,13 @@ Define `languageFiles` prop that contains an object of:
 
 Define translatable string in the code using `<T>` tag:
 
-```js
+```ts
 <T>Original phrase</T>
 ```
 
 If necessary, you may use variables like so:
 
-```js
+```ts
 <T name={name}>{'Hello, {name}'}</T>
 ```
 
@@ -126,13 +126,13 @@ If necessary, you may use variables like so:
 
 Define translatable string in the code using `useTranslation` hook:
 
-```js
+```ts
 const translatedPhrase = useTranslation('Original phrase');
 ```
 
 If necessary, you may use variables like so:
 
-```js
+```ts
 const translatedPhrase = useTranslation('Hello, {name}', { name });
 ```
 
