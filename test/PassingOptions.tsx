@@ -46,6 +46,6 @@ export default function PassingOptions({ passMethod, setPassMethod }: PassingOpt
 }
 
 PassingOptions.propTypes = {
-  passMethod: PropTypes.oneOf(['attribute', 'prop']),
+  passMethod: PropTypes.oneOf(['attribute', 'prop'] as const),
   setPassMethod: PropTypes.func.isRequired,
 };
