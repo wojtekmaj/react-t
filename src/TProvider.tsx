@@ -43,6 +43,6 @@ export default function TProvider<T extends LanguageFiles>({
 TProvider.propTypes = {
   children: PropTypes.node,
   defaultLocale: PropTypes.string,
-  languageFiles: PropTypes.objectOf(PropTypes.oneOfType([PropTypes.object, PropTypes.func])),
+  languageFiles: PropTypes.objectOf(PropTypes.oneOfType([PropTypes.any, PropTypes.func])),
   locale: PropTypes.string,
 };
