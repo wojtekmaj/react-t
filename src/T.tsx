@@ -9,12 +9,14 @@ export type TProps = {
   children?: string;
 } & Args;
 
-export default function T({ children, ...args }: TProps) {
+const T: React.FC<TProps> = function T({ children, ...args }) {
   const translatedChildren = useTranslation(children, args);
 
   return translatedChildren === undefined ? null : <>{translatedChildren}</>;
-}
+};
 
 T.propTypes = {
   children: PropTypes.string,
 };
+
+export default T;

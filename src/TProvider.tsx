@@ -16,12 +16,9 @@ export type TProviderProps<T extends LanguageFiles> = {
   locale?: Extract<keyof T, string>;
 };
 
-export default function TProvider<T extends LanguageFiles>({
-  children,
-  defaultLocale,
-  languageFiles,
-  locale: propsLocale,
-}: TProviderProps<T>) {
+const TProvider: React.FC<TProviderProps<LanguageFiles>> = function TProvider<
+  T extends LanguageFiles,
+>({ children, defaultLocale, languageFiles, locale: propsLocale }: TProviderProps<T>) {
   const supportedLocales = languageFiles ? Object.keys(languageFiles) : [];
 
   const locale = useLocale({ defaultLocale, propsLocale, supportedLocales });
@@ -38,7 +35,7 @@ export default function TProvider<T extends LanguageFiles>({
   }, [getterOrLanguageFile]);
 
   return <TContext.Provider value={{ languageFile }}>{children}</TContext.Provider>;
-}
+};
 
 TProvider.propTypes = {
   children: PropTypes.node,
@@ -46,3 +43,5 @@ TProvider.propTypes = {
   languageFiles: PropTypes.objectOf(PropTypes.oneOfType([PropTypes.any, PropTypes.func])),
   locale: PropTypes.string,
 };
+
+export default TProvider;
