@@ -1673,7 +1673,6 @@ __metadata:
     "@types/styled-components": ^5.1.26
     "@vitejs/plugin-react": ^3.0.0
     "@wojtekmaj/react-t": "portal:../"
-    prop-types: ^15.6.0
     react: ^18.2.0
     react-dom: ^18.2.0
     typescript: ^5.0.0

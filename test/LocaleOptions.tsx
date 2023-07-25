@@ -1,5 +1,4 @@
 import React, { useRef } from 'react';
-import PropTypes from 'prop-types';
 
 type LocaleOptionsProps = {
   locale: string | undefined;
@@ -114,8 +113,3 @@ export default function LocaleOptions({ locale, setLocale }: LocaleOptionsProps)
     </fieldset>
   );
 }
-
-LocaleOptions.propTypes = {
-  locale: PropTypes.string,
-  setLocale: PropTypes.func.isRequired,
-};

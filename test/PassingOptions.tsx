@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
 import type { PassMethod } from './shared/types';
 
@@ -44,8 +43,3 @@ export default function PassingOptions({ passMethod, setPassMethod }: PassingOpt
     </fieldset>
   );
 }
-
-PassingOptions.propTypes = {
-  passMethod: PropTypes.oneOf(['attribute', 'prop'] as const),
-  setPassMethod: PropTypes.func.isRequired,
-};
