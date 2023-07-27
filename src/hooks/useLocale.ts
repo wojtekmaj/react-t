@@ -1,8 +1,8 @@
 import { getUserLocales } from 'get-user-locale';
 
-import { getMatchingLocale } from '../utils/locale';
+import { getMatchingLocale } from '../utils/locale.js';
 
-import useDocumentLocale from './useDocumentLocale';
+import useDocumentLocale from './useDocumentLocale.js';
 
 export default function useLocale({
   defaultLocale,
