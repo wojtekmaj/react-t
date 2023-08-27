@@ -369,4 +369,16 @@ describe('<T /> component', () => {
 
     expect(await findByText('Hallo Welt!')).toBeInTheDocument();
   });
+
+  it('returns empty string if the translated phrase is an empty string', async () => {
+    const { findByText, queryByText } = render(
+      <TProvider languageFiles={{ 'de-DE': { foo: 'foo', bar: '' } }} locale="de-DE">
+        <T>foo</T>
+        <T>bar</T>
+      </TProvider>,
+    );
+
+    expect(await findByText('foo')).toBeInTheDocument();
+    expect(queryByText('bar')).not.toBeInTheDocument();
+  });
 });
