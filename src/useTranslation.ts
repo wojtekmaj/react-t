@@ -6,15 +6,7 @@ import TContext from './TContext.js';
 import type { Args, ArgsOfNodes, ArgsOfStringsOrNumbers, LanguageFile } from './shared/types.js';
 
 function getRawTranslatedString(string: string, languageFile: LanguageFile | undefined): string {
-  if (languageFile) {
-    const rawTranslatedString = languageFile[string];
-
-    if (rawTranslatedString) {
-      return rawTranslatedString;
-    }
-  }
-
-  return string;
+  return languageFile?.[string] ?? string;
 }
 
 function applyArg(
