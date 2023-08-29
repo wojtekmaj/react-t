@@ -14,7 +14,7 @@ export default function useDocumentLocale(): string | null {
   );
 
   const onLangAttributeChange = useCallback(() => {
-    const nextLocale = document.documentElement.getAttribute('lang');
+    const nextLocale = isBrowser ? document.documentElement.getAttribute('lang') : null;
     setDocumentLocale(nextLocale);
   }, []);
 
