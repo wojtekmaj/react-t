@@ -1,6 +1,6 @@
 {
   "name": "@wojtekmaj/react-t",
-  "version": "0.10.2",
+  "version": "0.10.3",
   "description": "Simple translation module for React applications.",
   "type": "module",
   "sideEffects": false,
