@@ -6,7 +6,7 @@ import { getUserLocales } from 'get-user-locale';
 import T from './T.js';
 import TProvider from './TProvider.js';
 
-import { muteConsole, restoreConsole } from '../test-utils.js';
+import { muteConsole, restoreConsole } from '../../../test-utils.js';
 
 import type { LanguageFile, LanguageFileModule } from './shared/types.js';
 

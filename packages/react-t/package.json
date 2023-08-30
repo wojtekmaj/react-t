@@ -1,0 +1,90 @@
+{
+  "name": "@wojtekmaj/react-t",
+  "version": "0.10.3",
+  "description": "Simple translation module for React applications.",
+  "type": "module",
+  "sideEffects": false,
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/esm/index.js",
+  "source": "./src/index.ts",
+  "types": "./dist/cjs/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.js"
+    },
+    "./dist/esm/utils/locale": "./dist/esm/utils/locale.js",
+    "./dist/esm/utils/locale.js": "./dist/esm/utils/locale.js"
+  },
+  "scripts": {
+    "build": "yarn build-esm && yarn build-cjs && yarn build-cjs-package",
+    "build-esm": "tsc --project tsconfig.build.json --outDir dist/esm --module esnext",
+    "build-cjs": "tsc --project tsconfig.build.json --outDir dist/cjs --module commonjs",
+    "build-cjs-package": "echo '{\n  \"type\": \"commonjs\"\n}' > dist/cjs/package.json",
+    "clean": "rimraf dist",
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "prepack": "yarn clean && yarn build",
+    "prettier": "prettier --check . --cache",
+    "test": "yarn lint && yarn tsc && yarn prettier && yarn unit",
+    "tsc": "tsc --noEmit",
+    "unit": "vitest",
+    "watch": "yarn build-esm --watch & yarn build-cjs --watch"
+  },
+  "keywords": [
+    "react",
+    "translation",
+    "localization",
+    "l10n",
+    "i18n"
+  ],
+  "author": {
+    "name": "Wojciech Maj",
+    "email": "kontakt@wojtekmaj.pl"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@wojtekmaj/react-hooks": "^1.16.2",
+    "get-user-locale": "^2.2.1",
+    "prop-types": "^15.6.0",
+    "tiny-invariant": "^1.0.0"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^5.15.0",
+    "@testing-library/react": "^14.0.0",
+    "@types/react": "*",
+    "eslint": "^8.26.0",
+    "eslint-config-wojtekmaj": "^0.9.0",
+    "husky": "^8.0.0",
+    "jsdom": "^21.1.0",
+    "prettier": "^2.7.0",
+    "pretty-quick": "^3.1.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "rimraf": "^3.0.0",
+    "typescript": "^5.0.0",
+    "vitest": "^0.34.0"
+  },
+  "peerDependencies": {
+    "@types/react": "^16.8.0 || ^17.0.0 || ^18.0.0",
+    "react": "^16.8.0 || ^17.0.0 || ^18.0.0"
+  },
+  "peerDependenciesMeta": {
+    "@types/react": {
+      "optional": true
+    }
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "files": [
+    "dist",
+    "src"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wojtekmaj/react-t.git",
+    "directory": "packages/react-t"
+  },
+  "funding": "https://github.com/wojtekmaj/react-t?sponsor=1"
+}
