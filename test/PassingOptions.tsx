@@ -1,5 +1,3 @@
-import React from 'react';
-
 import type { PassMethod } from './shared/types.js';
 
 type PassingOptionsProps = {
