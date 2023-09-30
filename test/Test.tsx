@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import T, { TProvider, useTranslation } from '@wojtekmaj/react-t';
 import { useTick } from '@wojtekmaj/react-hooks';
 
