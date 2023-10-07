@@ -7,7 +7,7 @@ import { resolveLanguageFile, resolveLanguageFileSync } from './utils/resolver.j
 
 import useLocale from './hooks/useLocale.js';
 
-import { LanguageFile, LanguageFiles } from './shared/types.js';
+import type { LanguageFile, LanguageFiles } from './shared/types.js';
 
 export type TProviderProps<T extends LanguageFiles> = {
   children: React.ReactNode;
