@@ -1,4 +1,4 @@
-[![npm](https://img.shields.io/npm/v/@wojtekmaj/react-t.svg)](https://www.npmjs.com/package/@wojtekmaj/react-t) ![downloads](https://img.shields.io/npm/dt/@wojtekmaj/react-t.svg) [![CI](https://github.com/wojtekmaj/react-t/workflows/CI/badge.svg)](https://github.com/wojtekmaj/react-t/actions)
+[![npm](https://img.shields.io/npm/v/@wojtekmaj/react-t.svg)](https://www.npmjs.com/package/@wojtekmaj/react-t) ![downloads](https://img.shields.io/npm/dt/@wojtekmaj/react-t.svg) [![CI](https://github.com/wojtekmaj/react-t/actions/workflows/ci.yml/badge.svg)](https://github.com/wojtekmaj/react-t/actions)
 
 # React-T
 
