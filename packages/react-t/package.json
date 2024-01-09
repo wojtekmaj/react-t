@@ -82,7 +82,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/wojtekmaj/react-t.git",
+    "url": "git+https://github.com/wojtekmaj/react-t.git",
     "directory": "packages/react-t"
   },
   "funding": "https://github.com/wojtekmaj/react-t?sponsor=1"
