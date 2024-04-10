@@ -50,7 +50,7 @@
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^6.0.0",
-    "@testing-library/react": "^14.0.0",
+    "@testing-library/react": "^15.0.0",
     "@types/node": "*",
     "@types/react": "*",
     "eslint": "^8.56.0",
