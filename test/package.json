@@ -19,6 +19,7 @@
   },
   "license": "MIT",
   "dependencies": {
+    "@wojtekmaj/react-hooks": "^1.16.2",
     "@wojtekmaj/react-t": "workspace:packages/react-t",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"

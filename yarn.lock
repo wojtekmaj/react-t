@@ -4185,6 +4185,7 @@ __metadata:
     "@types/react": "npm:*"
     "@types/styled-components": "npm:^5.1.26"
     "@vitejs/plugin-react": "npm:^4.2.0"
+    "@wojtekmaj/react-hooks": "npm:^1.16.2"
     "@wojtekmaj/react-t": "workspace:packages/react-t"
     eslint: "npm:^8.56.0"
     eslint-config-wojtekmaj: "npm:^1.0.0"
