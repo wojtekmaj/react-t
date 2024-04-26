@@ -45,7 +45,6 @@
   "dependencies": {
     "@wojtekmaj/react-hooks": "^1.16.2",
     "get-user-locale": "^2.2.1",
-    "prop-types": "^15.6.0",
     "tiny-invariant": "^1.0.0"
   },
   "devDependencies": {

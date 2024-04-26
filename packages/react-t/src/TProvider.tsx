@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
 
 import TContext from './TContext.js';
 
@@ -35,13 +34,6 @@ const TProvider: React.FC<TProviderProps<LanguageFiles>> = function TProvider<
   }, [getterOrLanguageFile]);
 
   return <TContext.Provider value={{ languageFile }}>{children}</TContext.Provider>;
-};
-
-TProvider.propTypes = {
-  children: PropTypes.node,
-  defaultLocale: PropTypes.string,
-  languageFiles: PropTypes.objectOf(PropTypes.oneOfType([PropTypes.any, PropTypes.func])),
-  locale: PropTypes.string,
 };
 
 export default TProvider;
