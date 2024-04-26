@@ -1,5 +1,4 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import React from 'react';
 import { act, render } from '@testing-library/react';
 import { getUserLocales } from 'get-user-locale';
 
