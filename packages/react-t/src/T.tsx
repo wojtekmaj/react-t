@@ -6,10 +6,8 @@ export type TProps = {
   children?: string;
 } & Args;
 
-const T: React.FC<TProps> = function T({ children, ...args }) {
+export default function T({ children, ...args }: TProps) {
   const translatedChildren = useTranslation(children, args);
 
   return translatedChildren === undefined ? null : <>{translatedChildren}</>;
-};
-
-export default T;
+}
