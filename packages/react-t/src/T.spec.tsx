@@ -263,6 +263,7 @@ describe('<T /> component', () => {
 
     expect(await findByText('Hallo Welt!')).toBeInTheDocument();
   });
+
   it('returns translated phrase if html lang is given and asynchronous functions returning language files as ESM modules are given', async () => {
     document.documentElement.setAttribute('lang', 'de-DE');
 
