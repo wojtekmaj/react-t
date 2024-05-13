@@ -31,10 +31,7 @@ export default function TProvider<T extends LanguageFiles>({
 
   const locale = useLocale({ defaultLocale, propsLocale, supportedLocales });
 
-  const getterOrLanguageFile =
-    (languageFiles && locale && languageFiles[locale] ? languageFiles[locale] : null) || null;
-
   return (
-    <TContext.Provider value={{ getterOrLanguageFile, suspend }}>{children}</TContext.Provider>
+    <TContext.Provider value={{ languageFiles, locale, suspend }}>{children}</TContext.Provider>
   );
 }

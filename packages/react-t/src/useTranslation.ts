@@ -150,7 +150,10 @@ export default function useTranslation(
 
   invariant(context, 'Unable to find TProvider context. Did you wrap your app in <TProvider />?');
 
-  const { getterOrLanguageFile, suspend } = context;
+  const { languageFiles, locale, suspend } = context;
+
+  const getterOrLanguageFile =
+    (languageFiles && locale && languageFiles[locale] ? languageFiles[locale] : null) || null;
 
   // We're breaking the rules of hooks here because we know that suspend will never change
   /* eslint-disable react-hooks/rules-of-hooks */
