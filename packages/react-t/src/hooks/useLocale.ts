@@ -10,7 +10,7 @@ export default function useLocale({
   supportedLocales,
 }: {
   defaultLocale?: string;
-  propsLocale?: string;
+  propsLocale?: string | null;
   supportedLocales: string[];
 }): string | null {
   const documentLocale = useDocumentLocale();

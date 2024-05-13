@@ -232,6 +232,26 @@ describe('<T /> component', () => {
     expect(getByText('Hallo John!')).toBeInTheDocument();
   });
 
+  it('returns translated phrases with lang overwritten by the second TProvider', async () => {
+    document.documentElement.setAttribute('lang', 'de-DE');
+
+    const { getByText } = render(
+      <TProvider languageFiles={languageFiles}>
+        <p>
+          <T>Hello world!</T>
+        </p>
+        <TProvider locale="es-ES">
+          <p>
+            <T>Hello world!</T>
+          </p>
+        </TProvider>
+      </TProvider>,
+    );
+
+    expect(getByText('Hallo Welt!')).toBeInTheDocument();
+    expect(getByText('¡Hola Mundo!')).toBeInTheDocument();
+  });
+
   it('returns translated phrase with ReactNode variable if locale prop is given', () => {
     document.documentElement.setAttribute('lang', 'de-DE');
 

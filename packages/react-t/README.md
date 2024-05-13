@@ -110,6 +110,17 @@ Define `languageFiles` prop that contains an object of:
 
 If you want `T` and `useTranslation` to trigger Suspense, provide `suspend` prop to `<TProvider />` and wrap your app in `<Suspense />`.
 
+If you want to override locale, wrap components that should use a different locale in another `<TProvider />` with `locale` prop provided. Other props like `languageFiles` will be inherited from the parent `<TProvider />`.
+
+```tsx
+<TProvider>
+  <ThisComponentWillUseDefaultLocale />
+  <TProvider locale="de-DE">
+    <AndThisComponentWillUseGermanLocale />
+  </TProvider>
+</TProvider>
+```
+
 ### Usage of the `T` component:
 
 Define translatable string in the code using `<T>` tag:

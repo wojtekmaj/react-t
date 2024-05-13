@@ -54,6 +54,12 @@ function TestContent() {
       <p>
         <T name={<FancyJohn />}>{`Hello {name}!`}</T>
       </p>
+      <h3>Always in Spanish</h3>
+      <TProvider locale="es">
+        <p>
+          <T>Hello world!</T>
+        </p>
+      </TProvider>
       <h2>
         Using <code>useTranslation</code> hook
       </h2>
