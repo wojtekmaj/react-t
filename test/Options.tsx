@@ -1,11 +1,19 @@
 import type { PassMethod } from './shared/types.js';
 
-type PassingOptionsProps = {
+type OptionsProps = {
+  delay: boolean;
   passMethod: PassMethod;
+  setDelay: (value: boolean) => void;
   setPassMethod: (value: PassMethod) => void;
 };
 
-export default function PassingOptions({ passMethod, setPassMethod }: PassingOptionsProps) {
+export default function Options({ delay, passMethod, setDelay, setPassMethod }: OptionsProps) {
+  function onDelayChange(event: React.ChangeEvent<HTMLInputElement>) {
+    const { checked } = event.target;
+
+    setDelay(checked);
+  }
+
   function onPassMethodChange(event: React.ChangeEvent<HTMLInputElement>) {
     const nextPassMethod = event.target.value;
 
@@ -14,8 +22,16 @@ export default function PassingOptions({ passMethod, setPassMethod }: PassingOpt
 
   return (
     <fieldset>
-      <legend>Passing options</legend>
+      <legend>Options</legend>
 
+      <div>
+        <input checked={delay} id="delay" name="delay" onChange={onDelayChange} type="checkbox" />
+        <label htmlFor="delay">Delay</label>
+      </div>
+
+      <label htmlFor="passMethod">
+        Pass <code>lang</code> as…
+      </label>
       <div>
         <input
           checked={passMethod === 'attribute'}
@@ -25,7 +41,7 @@ export default function PassingOptions({ passMethod, setPassMethod }: PassingOpt
           type="radio"
           value="attribute"
         />
-        <label htmlFor="passAttribute">Pass as an HTML attribute</label>
+        <label htmlFor="passAttribute">HTML attribute</label>
       </div>
       <div>
         <input
@@ -36,7 +52,7 @@ export default function PassingOptions({ passMethod, setPassMethod }: PassingOpt
           type="radio"
           value="prop"
         />
-        <label htmlFor="passProp">Pass as a prop</label>
+        <label htmlFor="passProp">Prop</label>
       </div>
     </fieldset>
   );

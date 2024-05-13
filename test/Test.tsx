@@ -3,11 +3,11 @@ import T, { TProvider, useTranslation } from '@wojtekmaj/react-t';
 import { useTick } from '@wojtekmaj/react-hooks';
 
 import LocaleOptions from './LocaleOptions.js';
-import PassingOptions from './PassingOptions.js';
+import Options from './Options.js';
 
 import './Test.css';
 
-import { languageFiles } from './i18n/index.js';
+import { languageFiles, delayedLanguageFiles } from './i18n/index.js';
 
 import type { PassMethod } from './shared/types.js';
 
@@ -68,6 +68,7 @@ function TestContent() {
 
 export default function Test() {
   const [locale, setLocale] = useState<string>();
+  const [delay, setDelay] = useState(false);
   const [passMethod, setPassMethod] = useState<PassMethod>('attribute');
 
   useEffect(() => {
@@ -81,7 +82,10 @@ export default function Test() {
   }, [locale, passMethod]);
 
   return (
-    <TProvider locale={passMethod === 'prop' ? locale : undefined} languageFiles={languageFiles}>
+    <TProvider
+      locale={passMethod === 'prop' ? locale : undefined}
+      languageFiles={delay ? delayedLanguageFiles : languageFiles}
+    >
       <div className="Test">
         <header>
           <h1>react-t test page</h1>
@@ -89,7 +93,12 @@ export default function Test() {
         <div className="Test__container">
           <aside className="Test__container__options">
             <LocaleOptions locale={locale} setLocale={setLocale} />
-            <PassingOptions passMethod={passMethod} setPassMethod={setPassMethod} />
+            <Options
+              delay={delay}
+              passMethod={passMethod}
+              setDelay={setDelay}
+              setPassMethod={setPassMethod}
+            />
           </aside>
           <TestContent />
         </div>
