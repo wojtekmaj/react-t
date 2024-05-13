@@ -1,11 +1,21 @@
-import { cloneElement, isValidElement, useContext } from 'react';
+import { cloneElement, isValidElement, useContext, useEffect, useState } from 'react';
 import invariant from 'tiny-invariant';
 
 import TContext from './TContext.js';
 
-import type { Args, ArgsOfNodes, ArgsOfStringsOrNumbers, LanguageFile } from './shared/types.js';
+import use from './use.js';
 
-function getRawTranslatedString(string: string, languageFile: LanguageFile | undefined): string {
+import { resolveLanguageFile, resolveLanguageFileSync } from './utils/resolver.js';
+
+import type {
+  Args,
+  ArgsOfNodes,
+  ArgsOfStringsOrNumbers,
+  GetterOrLanguageFile,
+  LanguageFile,
+} from './shared/types.js';
+
+function getRawTranslatedString(string: string, languageFile: LanguageFile | null): string {
   return languageFile?.[string] ?? string;
 }
 
@@ -74,6 +84,50 @@ function applyArgs(rawString: string, args: Args): string | React.ReactNode[] {
   return result;
 }
 
+const resolveCache = new Map<GetterOrLanguageFile, Promise<LanguageFile | null>>();
+
+function useLanguageFileSuspense(getterOrLanguageFile: GetterOrLanguageFile | null) {
+  if (!getterOrLanguageFile) {
+    return null;
+  }
+
+  const languageFileSync = resolveLanguageFileSync(getterOrLanguageFile);
+
+  if (languageFileSync) {
+    return languageFileSync;
+  }
+
+  const promise = (() => {
+    if (!resolveCache.has(getterOrLanguageFile)) {
+      resolveCache.set(getterOrLanguageFile, resolveLanguageFile(getterOrLanguageFile));
+    }
+
+    const cachedPromise = resolveCache.get(getterOrLanguageFile);
+
+    if (!cachedPromise) {
+      throw new Error('Unable to find cached promise');
+    }
+
+    return cachedPromise;
+  })();
+
+  const languageFileAsync = use(promise);
+
+  return languageFileAsync;
+}
+
+function useLanguageFileState(getterOrLanguageFile: GetterOrLanguageFile | null) {
+  const [languageFile, setLanguageFile] = useState<LanguageFile | null>(
+    resolveLanguageFileSync(getterOrLanguageFile),
+  );
+
+  useEffect(() => {
+    resolveLanguageFile(getterOrLanguageFile).then(setLanguageFile);
+  }, [getterOrLanguageFile]);
+
+  return languageFile;
+}
+
 export default function useTranslation(string?: undefined, args?: undefined): undefined;
 export default function useTranslation(string: undefined, args?: Args): undefined;
 export default function useTranslation<T extends string | undefined>(
@@ -96,7 +150,13 @@ export default function useTranslation(
 
   invariant(context, 'Unable to find TProvider context. Did you wrap your app in <TProvider />?');
 
-  const { languageFile } = context;
+  const { getterOrLanguageFile, suspend } = context;
+
+  // We're breaking the rules of hooks here because we know that suspend will never change
+  /* eslint-disable react-hooks/rules-of-hooks */
+  const languageFile = suspend
+    ? useLanguageFileSuspense(getterOrLanguageFile)
+    : useLanguageFileState(getterOrLanguageFile);
 
   if (!string) {
     return string;

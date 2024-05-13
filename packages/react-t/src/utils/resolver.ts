@@ -5,18 +5,18 @@ import type {
   GetterOrLanguageFile,
 } from '../shared/types.js';
 
-function resolveModule<T extends object | undefined>(module: Module<T>): T {
+function resolveModule<T extends object | null>(module: Module<T>): T {
   return module && 'default' in module ? module.default : module;
 }
 
 function resolveLanguageFileModuleSync(
-  getterOrLanguageFile?: GetterOrLanguageFile,
-): LanguageFileModule | undefined {
+  getterOrLanguageFile: GetterOrLanguageFile | null,
+): LanguageFileModule | null {
   if (getterOrLanguageFile instanceof Function) {
     const promiseOrLanguageFile = getterOrLanguageFile();
 
     if (promiseOrLanguageFile instanceof Promise) {
-      return undefined;
+      return null;
     }
 
     return promiseOrLanguageFile;
@@ -26,14 +26,14 @@ function resolveLanguageFileModuleSync(
 }
 
 export function resolveLanguageFileSync(
-  getterOrLanguageFile?: GetterOrLanguageFile,
-): LanguageFile | undefined {
+  getterOrLanguageFile: GetterOrLanguageFile | null,
+): LanguageFile | null {
   return resolveModule(resolveLanguageFileModuleSync(getterOrLanguageFile));
 }
 
 function resolveLanguageFileModule(
-  getterOrLanguageFile?: GetterOrLanguageFile,
-): Promise<LanguageFileModule | undefined> {
+  getterOrLanguageFile: GetterOrLanguageFile | null,
+): Promise<LanguageFileModule | null> {
   if (getterOrLanguageFile instanceof Function) {
     const promiseOrLanguageFile = getterOrLanguageFile();
 
@@ -48,7 +48,7 @@ function resolveLanguageFileModule(
 }
 
 export function resolveLanguageFile(
-  getterOrLanguageFile?: GetterOrLanguageFile,
-): Promise<LanguageFile | undefined> {
+  getterOrLanguageFile: GetterOrLanguageFile | null,
+): Promise<LanguageFile | null> {
   return resolveLanguageFileModule(getterOrLanguageFile).then(resolveModule);
 }

@@ -108,6 +108,8 @@ Define `languageFiles` prop that contains an object of:
   }
   ```
 
+If you want `T` and `useTranslation` to trigger Suspense, provide `suspend` prop to `<TProvider />` and wrap your app in `<Suspense />`.
+
 ### Usage of the `T` component:
 
 Define translatable string in the code using `<T>` tag:

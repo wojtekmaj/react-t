@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import T, { TProvider, useTranslation } from '@wojtekmaj/react-t';
 import { useTick } from '@wojtekmaj/react-hooks';
 
@@ -69,6 +69,7 @@ function TestContent() {
 export default function Test() {
   const [locale, setLocale] = useState<string>();
   const [delay, setDelay] = useState(false);
+  const [suspend, setSuspend] = useState(false);
   const [passMethod, setPassMethod] = useState<PassMethod>('attribute');
 
   useEffect(() => {
@@ -82,27 +83,33 @@ export default function Test() {
   }, [locale, passMethod]);
 
   return (
-    <TProvider
-      locale={passMethod === 'prop' ? locale : undefined}
-      languageFiles={delay ? delayedLanguageFiles : languageFiles}
-    >
-      <div className="Test">
-        <header>
-          <h1>react-t test page</h1>
-        </header>
-        <div className="Test__container">
-          <aside className="Test__container__options">
-            <LocaleOptions locale={locale} setLocale={setLocale} />
-            <Options
-              delay={delay}
-              passMethod={passMethod}
-              setDelay={setDelay}
-              setPassMethod={setPassMethod}
-            />
-          </aside>
-          <TestContent />
-        </div>
+    <div className="Test">
+      <header>
+        <h1>react-t test page</h1>
+      </header>
+      <div className="Test__container">
+        <aside className="Test__container__options">
+          <LocaleOptions locale={locale} setLocale={setLocale} />
+          <Options
+            delay={delay}
+            passMethod={passMethod}
+            suspend={suspend}
+            setDelay={setDelay}
+            setPassMethod={setPassMethod}
+            setSuspend={setSuspend}
+          />
+        </aside>
+        <Suspense fallback={<div>Loading…</div>}>
+          <TProvider
+            key={suspend ? 'provider-suspend' : 'provider'}
+            locale={passMethod === 'prop' ? locale : undefined}
+            languageFiles={delay ? delayedLanguageFiles : languageFiles}
+            suspend={suspend}
+          >
+            <TestContent />
+          </TProvider>
+        </Suspense>
       </div>
-    </TProvider>
+    </div>
   );
 }

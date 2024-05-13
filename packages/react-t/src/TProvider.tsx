@@ -1,18 +1,17 @@
-import { useEffect, useState } from 'react';
+import { useRef } from 'react';
 
 import TContext from './TContext.js';
 
-import { resolveLanguageFile, resolveLanguageFileSync } from './utils/resolver.js';
-
 import useLocale from './hooks/useLocale.js';
 
-import type { LanguageFile, LanguageFiles } from './shared/types.js';
+import type { LanguageFiles } from './shared/types.js';
 
 export type TProviderProps<T extends LanguageFiles> = {
   children: React.ReactNode;
   defaultLocale?: Extract<keyof T, string>;
   languageFiles?: LanguageFiles;
   locale?: Extract<keyof T, string>;
+  suspend?: boolean;
 };
 
 export default function TProvider<T extends LanguageFiles>({
@@ -20,21 +19,22 @@ export default function TProvider<T extends LanguageFiles>({
   defaultLocale,
   languageFiles,
   locale: propsLocale,
+  suspend = false,
 }: TProviderProps<T>) {
+  const prevSuspend = useRef(suspend);
+
+  if (prevSuspend.current !== suspend) {
+    throw new Error('Changing the `suspend` prop of `TProvider` between renders is not supported.');
+  }
+
   const supportedLocales = languageFiles ? Object.keys(languageFiles) : [];
 
   const locale = useLocale({ defaultLocale, propsLocale, supportedLocales });
 
   const getterOrLanguageFile =
-    languageFiles && locale && languageFiles[locale] ? languageFiles[locale] : undefined;
+    (languageFiles && locale && languageFiles[locale] ? languageFiles[locale] : null) || null;
 
-  const [languageFile, setLanguageFile] = useState<LanguageFile | undefined>(
-    resolveLanguageFileSync(getterOrLanguageFile),
+  return (
+    <TContext.Provider value={{ getterOrLanguageFile, suspend }}>{children}</TContext.Provider>
   );
-
-  useEffect(() => {
-    resolveLanguageFile(getterOrLanguageFile).then(setLanguageFile);
-  }, [getterOrLanguageFile]);
-
-  return <TContext.Provider value={{ languageFile }}>{children}</TContext.Provider>;
 }

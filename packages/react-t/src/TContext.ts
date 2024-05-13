@@ -1,7 +1,9 @@
 import { createContext } from 'react';
 
-import type { LanguageFile } from './shared/types.js';
+import type { GetterOrLanguageFile } from './shared/types.js';
 
-const TContext = createContext<{ languageFile: LanguageFile | undefined } | undefined>(undefined);
+const TContext = createContext<
+  { getterOrLanguageFile: GetterOrLanguageFile | null; suspend: boolean } | undefined
+>(undefined);
 
 export default TContext;

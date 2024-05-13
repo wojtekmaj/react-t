@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { act, render } from '@testing-library/react';
 import { getUserLocales } from 'get-user-locale';
@@ -41,6 +42,23 @@ const asyncLanguageFiles: Record<string, () => Promise<LanguageFile>> = {
 const asyncLanguageFilesEsm: Record<string, () => Promise<LanguageFileModule>> = {
   'de-DE': () => new Promise((resolve) => resolve({ default: deLanguageFile })),
   'es-ES': () => new Promise((resolve) => resolve({ default: esLanguageFile })),
+};
+
+function sleep(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+export const delayedLanguageFiles = {
+  'de-DE': async () => {
+    await sleep(1000);
+
+    return deLanguageFile;
+  },
+  'es-ES': async () => {
+    await sleep(1000);
+
+    return esLanguageFile;
+  },
 };
 
 vi.mock('get-user-locale', () => ({
@@ -162,6 +180,32 @@ describe('<T /> component', () => {
     );
 
     expect(getByText('Hello world!')).toBeInTheDocument();
+  });
+
+  it('returns original phrase if language file is still loading', async () => {
+    document.documentElement.setAttribute('lang', 'de-DE');
+
+    const { getByText } = render(
+      <TProvider languageFiles={asyncLanguageFiles}>
+        <T>Hello world!</T>
+      </TProvider>,
+    );
+
+    expect(getByText('Hello world!')).toBeInTheDocument();
+  });
+
+  it('triggers Suspense if language file is still loading given suspend = true', async () => {
+    document.documentElement.setAttribute('lang', 'de-DE');
+
+    const { getByText } = render(
+      <Suspense fallback={<div>Loading…</div>}>
+        <TProvider languageFiles={delayedLanguageFiles} suspend>
+          <T>Hello world!</T>
+        </TProvider>
+      </Suspense>,
+    );
+
+    expect(getByText('Loading…')).toBeInTheDocument();
   });
 
   it('returns translated phrase if html lang is given and language files are given', async () => {
