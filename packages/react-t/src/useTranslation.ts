@@ -58,7 +58,7 @@ function applyArg(
     if (!isLast) {
       arr.push(
         isValidElement(replacement)
-          ? // eslint-disable-next-line react/no-array-index-key
+          ? // biome-ignore lint/suspicious/noArrayIndexKey: index is stable here
             cloneElement(replacement, { key: `${keyPrefix}-${index}` })
           : replacement,
       );
@@ -156,7 +156,6 @@ export default function useTranslation(
     (languageFiles && locale && languageFiles[locale] ? languageFiles[locale] : null) || null;
 
   // We're breaking the rules of hooks here because we know that suspend will never change
-  /* eslint-disable react-hooks/rules-of-hooks */
   const languageFile = suspend
     ? useLanguageFileSuspense(getterOrLanguageFile)
     : useLanguageFileState(getterOrLanguageFile);

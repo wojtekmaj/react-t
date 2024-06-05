@@ -6,7 +6,6 @@ import useLocale from './hooks/useLocale.js';
 
 import type { LanguageFiles } from './shared/types.js';
 
-/* eslint-disable react/no-unused-prop-types */
 export type TProviderProps<T extends LanguageFiles> = {
   children: React.ReactNode;
   defaultLocale?: Extract<keyof T, string>;
