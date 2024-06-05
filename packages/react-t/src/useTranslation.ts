@@ -53,18 +53,18 @@ function applyArg(
   return splitString.reduce((arr, element, index) => {
     const isLast = index === splitString.length - 1;
 
-    if (isLast) {
-      return [...arr, element];
+    arr.push(element);
+
+    if (!isLast) {
+      arr.push(
+        isValidElement(replacement)
+          ? // eslint-disable-next-line react/no-array-index-key
+            cloneElement(replacement, { key: `${keyPrefix}-${index}` })
+          : replacement,
+      );
     }
 
-    return [
-      ...arr,
-      element,
-      isValidElement(replacement)
-        ? // eslint-disable-next-line react/no-array-index-key
-          cloneElement(replacement, { key: `${keyPrefix}-${index}` })
-        : replacement,
-    ];
+    return arr;
   }, initialValue);
 }
 
