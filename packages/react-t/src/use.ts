@@ -14,7 +14,7 @@ type TState<T> =
   | { status: typeof STATUS.REJECTED; error: Error }
   | { status: typeof STATUS.FULFILLED; result: T };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+// biome-ignore lint/suspicious/noExplicitAny: Impossible to type
 const states = new Map<Promise<unknown>, TState<any>>();
 
 function usePromiseFallback<T>(usable: Promise<T>): T {
@@ -61,11 +61,9 @@ function useContextFallback<T>(context: React.Context<T>) {
 
 function useFallback<T>(usable: Usable<T>): T {
   if (usable instanceof Promise) {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
     return usePromiseFallback(usable);
   }
 
-  // eslint-disable-next-line react-hooks/rules-of-hooks
   return useContextFallback(usable);
 }
 

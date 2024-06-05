@@ -48,7 +48,7 @@ function sleep(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-export const delayedLanguageFiles = {
+const delayedLanguageFiles = {
   'de-DE': async () => {
     await sleep(1000);
 

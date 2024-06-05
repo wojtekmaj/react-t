@@ -43,16 +43,18 @@ function TestContent() {
         <T>Hello world!</T>
       </p>
       <p>
-        <T name="John">{`Hello {name}!`}</T>
+        <T name="John">{'Hello {name}!'}</T>
       </p>
       <p>
-        <T name="John" other="Elisabeth">{`Hello {name} and {other}!`}</T>
+        <T name="John" other="Elisabeth">
+          {'Hello {name} and {other}!'}
+        </T>
       </p>
       <p>
-        <T name="John">{`Hello {name}! Nice to meet you {name}!`}</T>
+        <T name="John">{'Hello {name}! Nice to meet you {name}!'}</T>
       </p>
       <p>
-        <T name={<FancyJohn />}>{`Hello {name}!`}</T>
+        <T name={<FancyJohn />}>{'Hello {name}!'}</T>
       </p>
       <h3>Always in Spanish</h3>
       <TProvider locale="es">
