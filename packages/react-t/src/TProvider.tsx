@@ -14,7 +14,9 @@ export type TProviderProps<T extends LanguageFiles> = {
   suspend?: boolean;
 };
 
-export default function TProvider<T extends LanguageFiles>(props: TProviderProps<T>) {
+export default function TProvider<T extends LanguageFiles>(
+  props: TProviderProps<T>,
+): React.ReactElement {
   const higherTContext = useContext(TContext);
 
   const { children } = props;
