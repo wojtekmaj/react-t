@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useMutationObserver } from '@wojtekmaj/react-hooks';
 
-const isBrowser = typeof document !== 'undefined';
+const isBrowser = typeof window !== 'undefined';
 
 const observerConfig = {
   attributeFilter: ['lang'],
