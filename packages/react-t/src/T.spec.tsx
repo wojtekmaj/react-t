@@ -8,6 +8,7 @@ import TProvider from './TProvider.js';
 
 import { muteConsole, restoreConsole } from '../../../test-utils.js';
 
+import type { MemoizedFunction } from 'lodash';
 import type { LanguageFile, LanguageFileModule } from './shared/types.js';
 
 const deLanguageFile: LanguageFile = {
@@ -65,9 +66,13 @@ vi.mock('get-user-locale', () => ({
   getUserLocales: vi.fn(),
 }));
 
-vi.mocked(getUserLocales).mockImplementation(() =>
-  Array.from(new Set([...navigator.languages, navigator.language, 'en-US'])),
-);
+function uniq<T>(array: T[]): T[] {
+  return Array.from(new Set(array));
+}
+
+vi.mocked(getUserLocales).mockImplementation((() =>
+  uniq([...navigator.languages, navigator.language, 'en-US'])) as (() => string[]) &
+  MemoizedFunction);
 
 describe('<T /> component', () => {
   beforeEach(() => {
