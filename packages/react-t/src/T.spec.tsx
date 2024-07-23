@@ -1,3 +1,4 @@
+import { setTimeout as sleep } from 'node:timers/promises';
 import { Suspense } from 'react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { act, render } from '@testing-library/react';
@@ -44,10 +45,6 @@ const asyncLanguageFilesEsm: Record<string, () => Promise<LanguageFileModule>> =
   'de-DE': () => new Promise((resolve) => resolve({ default: deLanguageFile })),
   'es-ES': () => new Promise((resolve) => resolve({ default: esLanguageFile })),
 };
-
-function sleep(ms: number) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-}
 
 const delayedLanguageFiles = {
   'de-DE': async () => {
