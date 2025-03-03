@@ -81,6 +81,10 @@ function applyArgs(rawString: string, args: Args): string | React.ReactNode[] {
     });
   }
 
+  if (result.length === 1 && typeof result[0] === 'string') {
+    return result[0];
+  }
+
   return result;
 }
 
