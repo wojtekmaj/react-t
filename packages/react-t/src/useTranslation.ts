@@ -68,8 +68,8 @@ function applyArg(
   }, initialValue);
 }
 
-function applyArgs(string: string, args: ArgsOfStringsOrNumbers): string;
-function applyArgs(string: string, args: ArgsOfNodes): React.ReactNode[];
+function applyArgs(rawString: string, args: ArgsOfStringsOrNumbers): string;
+function applyArgs(rawString: string, args: ArgsOfNodes): React.ReactNode[];
 function applyArgs(rawString: string, args: Args): string | React.ReactNode[] {
   let result: React.ReactNode[] = [rawString];
 
