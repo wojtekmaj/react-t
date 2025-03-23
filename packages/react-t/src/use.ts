@@ -1,5 +1,5 @@
 /// <reference types="react/canary" />
-import { use as originalUse, useContext } from 'react';
+import React from 'react';
 
 type Usable<T> = Promise<T> | React.Context<T>;
 
@@ -56,7 +56,7 @@ function usePromiseFallback<T>(usable: Promise<T>): T {
 }
 
 function useContextFallback<T>(context: React.Context<T>) {
-  return useContext(context);
+  return React.useContext(context);
 }
 
 function useFallback<T>(usable: Usable<T>): T {
@@ -67,6 +67,6 @@ function useFallback<T>(usable: Usable<T>): T {
   return useContextFallback(usable);
 }
 
-const use: <T>(usable: Usable<T>) => T = originalUse || useFallback;
+const use: <T>(usable: Usable<T>) => T = React.use || useFallback;
 
 export default use;
