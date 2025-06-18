@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useId, useRef } from 'react';
 
 type LocaleOptionsProps = {
   locale: string | undefined;
@@ -6,6 +6,12 @@ type LocaleOptionsProps = {
 };
 
 export default function LocaleOptions({ locale, setLocale }: LocaleOptionsProps) {
+  const localeDefaultId = useId();
+  const localeEnId = useId();
+  const localeDeId = useId();
+  const localeEsId = useId();
+  const localePlId = useId();
+  const customLocaleId = useId();
   const customLocale = useRef<HTMLInputElement>(null);
 
   function onChange(event: React.ChangeEvent<HTMLInputElement>) {
@@ -38,65 +44,65 @@ export default function LocaleOptions({ locale, setLocale }: LocaleOptionsProps)
       <div>
         <input
           checked={locale === undefined}
-          id="localeDefault"
+          id={localeDefaultId}
           name="locale"
           onChange={onChange}
           type="radio"
           value="undefined"
         />
-        <label htmlFor="localeDefault">Auto</label>
+        <label htmlFor={localeDefaultId}>Auto</label>
       </div>
       <div>
         <input
           checked={locale === 'en'}
-          id="localeEn"
+          id={localeEnId}
           name="locale"
           onChange={onChange}
           type="radio"
           value="en"
         />
-        <label htmlFor="localeEn">en (default)</label>
+        <label htmlFor={localeEnId}>en (default)</label>
       </div>
       <div>
         <input
           checked={locale === 'de'}
-          id="localeDe"
+          id={localeDeId}
           name="locale"
           onChange={onChange}
           type="radio"
           value="de"
         />
-        <label htmlFor="localeDe">de</label>
+        <label htmlFor={localeDeId}>de</label>
       </div>
       <div>
         <input
           checked={locale === 'es'}
-          id="localeEs"
+          id={localeEsId}
           name="locale"
           onChange={onChange}
           type="radio"
           value="es"
         />
-        <label htmlFor="localeEs">es</label>
+        <label htmlFor={localeEsId}>es</label>
       </div>
       <div>
         <input
           checked={locale === 'pl'}
-          id="localePl"
+          id={localePlId}
           name="locale"
           onChange={onChange}
           type="radio"
           value="pl"
         />
-        <label htmlFor="localePl">pl (not supported)</label>
+        <label htmlFor={localePlId}>pl (not supported)</label>
       </div>
       <form onSubmit={onCustomChange}>
-        <label htmlFor="customLocale">Custom locale:</label>
+        <label htmlFor={customLocaleId}>Custom locale:</label>
         &nbsp;
         <input
           key={locale}
           defaultValue={locale}
-          id="customLocale"
+          id={customLocaleId}
           name="customLocale"
           pattern="^[a-z]{2}(-[A-Z0-9]{2,3})?$"
           ref={customLocale}

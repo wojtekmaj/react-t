@@ -1,3 +1,5 @@
+import { useId } from 'react';
+
 import type { PassMethod } from './shared/types.js';
 
 type OptionsProps = {
@@ -17,6 +19,12 @@ export default function Options({
   setPassMethod,
   setSuspend,
 }: OptionsProps) {
+  const delayId = useId();
+  const suspendId = useId();
+  const passAttributeId = useId();
+  const passPropId = useId();
+  const passMethodLabelId = useId();
+
   function onDelayChange(event: React.ChangeEvent<HTMLInputElement>) {
     const { checked } = event.target;
 
@@ -40,45 +48,45 @@ export default function Options({
       <legend>Options</legend>
 
       <div>
-        <input checked={delay} id="delay" name="delay" onChange={onDelayChange} type="checkbox" />
-        <label htmlFor="delay">Delay</label>
+        <input checked={delay} id={delayId} name="delay" onChange={onDelayChange} type="checkbox" />
+        <label htmlFor={delayId}>Delay</label>
       </div>
 
       <div>
         <input
           checked={suspend}
-          id="suspend"
+          id={suspendId}
           name="suspend"
           onChange={onSuspendChange}
           type="checkbox"
         />
-        <label htmlFor="suspend">Suspend on loading</label>
+        <label htmlFor={suspendId}>Suspend on loading</label>
       </div>
 
-      <label htmlFor="passMethod">
+      <label htmlFor={passMethodLabelId}>
         Pass <code>lang</code> as…
       </label>
       <div>
         <input
           checked={passMethod === 'attribute'}
-          id="passAttribute"
+          id={passAttributeId}
           name="passMethod"
           onChange={onPassMethodChange}
           type="radio"
           value="attribute"
         />
-        <label htmlFor="passAttribute">HTML attribute</label>
+        <label htmlFor={passAttributeId}>HTML attribute</label>
       </div>
       <div>
         <input
           checked={passMethod === 'prop'}
-          id="passProp"
+          id={passPropId}
           name="passMethod"
           onChange={onPassMethodChange}
           type="radio"
           value="prop"
         />
-        <label htmlFor="passProp">Prop</label>
+        <label htmlFor={passPropId}>Prop</label>
       </div>
     </fieldset>
   );
