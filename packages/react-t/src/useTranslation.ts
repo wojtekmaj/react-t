@@ -121,10 +121,12 @@ function useLanguageFileSuspense(getterOrLanguageFile: GetterOrLanguageFile | nu
 }
 
 function useLanguageFileState(getterOrLanguageFile: GetterOrLanguageFile | null) {
+  // biome-ignore lint/correctness/useHookAtTopLevel: We know that suspend will never change
   const [languageFile, setLanguageFile] = useState<LanguageFile | null>(
     resolveLanguageFileSync(getterOrLanguageFile),
   );
 
+  // biome-ignore lint/correctness/useHookAtTopLevel: We know that suspend will never change
   useEffect(() => {
     resolveLanguageFile(getterOrLanguageFile).then(setLanguageFile);
   }, [getterOrLanguageFile]);
@@ -159,10 +161,11 @@ export default function useTranslation(
   const getterOrLanguageFile =
     (languageFiles && locale && languageFiles[locale] ? languageFiles[locale] : null) || null;
 
-  // We're breaking the rules of hooks here because we know that suspend will never change
   const languageFile = suspend
-    ? useLanguageFileSuspense(getterOrLanguageFile)
-    : useLanguageFileState(getterOrLanguageFile);
+    ? // biome-ignore lint/correctness/useHookAtTopLevel: We know that suspend will never change
+      useLanguageFileSuspense(getterOrLanguageFile)
+    : // biome-ignore lint/correctness/useHookAtTopLevel: We know that suspend will never change
+      useLanguageFileState(getterOrLanguageFile);
 
   if (!string) {
     return string;

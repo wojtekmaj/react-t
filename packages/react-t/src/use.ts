@@ -56,14 +56,17 @@ function usePromiseFallback<T>(usable: Promise<T>): T {
 }
 
 function useContextFallback<T>(context: React.Context<T>) {
+  // biome-ignore lint/correctness/useHookAtTopLevel: We know that usable will never change
   return React.useContext(context);
 }
 
 function useFallback<T>(usable: Usable<T>): T {
   if (usable instanceof Promise) {
+    // biome-ignore lint/correctness/useHookAtTopLevel: We know that usable will never change
     return usePromiseFallback(usable);
   }
 
+  // biome-ignore lint/correctness/useHookAtTopLevel: We know that usable will never change
   return useContextFallback(usable);
 }
 

@@ -9,5 +9,5 @@ export type TProps = {
 export default function T({ children, ...args }: TProps): React.ReactNode {
   const translatedChildren = useTranslation(children, args);
 
-  return translatedChildren === undefined ? null : <>{translatedChildren}</>;
+  return translatedChildren === undefined ? null : translatedChildren;
 }
