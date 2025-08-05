@@ -2,8 +2,9 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { act, renderHook, waitFor } from '@testing-library/react';
 import { getUserLocales } from 'get-user-locale';
 
-import useTranslation from './useTranslation.js';
 import TProvider from './TProvider.js';
+
+import useTranslation from './useTranslation.js';
 
 import { muteConsole, restoreConsole } from '../../../test-utils.js';
 

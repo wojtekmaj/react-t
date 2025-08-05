@@ -1,8 +1,8 @@
 import type {
-  Module,
+  GetterOrLanguageFile,
   LanguageFile,
   LanguageFileModule,
-  GetterOrLanguageFile,
+  Module,
 } from '../shared/types.js';
 
 function resolveModule<T extends object | null>(module: Module<T>): T {

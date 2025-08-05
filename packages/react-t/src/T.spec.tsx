@@ -1,7 +1,7 @@
 import { setTimeout as sleep } from 'node:timers/promises';
-import { Suspense } from 'react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { act, render } from '@testing-library/react';
+import { Suspense } from 'react';
 import { getUserLocales } from 'get-user-locale';
 
 import T from './T.js';
