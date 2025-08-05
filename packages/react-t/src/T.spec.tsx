@@ -1,4 +1,3 @@
-import { setTimeout as sleep } from 'node:timers/promises';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { act, render } from '@testing-library/react';
 import { Suspense } from 'react';
@@ -10,6 +9,10 @@ import TProvider from './TProvider.js';
 import { muteConsole, restoreConsole } from '../../../test-utils.js';
 
 import type { LanguageFile, LanguageFileModule } from './shared/types.js';
+
+async function sleep(ms: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
 
 const deLanguageFile: LanguageFile = {
   'Hello world!': 'Hallo Welt!',
