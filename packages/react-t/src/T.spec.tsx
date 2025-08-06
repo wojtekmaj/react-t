@@ -73,6 +73,8 @@ vi.mocked(getUserLocales).mockImplementation(() =>
 describe('<T /> component', () => {
   beforeEach(() => {
     document.documentElement.removeAttribute('lang');
+
+    vi.clearAllMocks();
   });
 
   it('throws when rendered without TProvider context', () => {
