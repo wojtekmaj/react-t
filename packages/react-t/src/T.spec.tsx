@@ -171,7 +171,7 @@ describe('<T /> component', () => {
     restoreConsole();
   });
 
-  it('returns original phrase if html lang equal to defaultLanguage is given', async () => {
+  it('returns original phrase if html lang equal to default language is given', async () => {
     document.documentElement.setAttribute('lang', 'en-US');
 
     const { getByText } = render(
@@ -359,7 +359,7 @@ describe('<T /> component', () => {
     expect(await findByText('¡Hola Mundo!')).toBeInTheDocument();
   });
 
-  it('changes translated phrase if html lang is changed to value equal to defaultLanguage', async () => {
+  it('changes translated phrase if html lang is changed to value equal to default language', async () => {
     document.documentElement.setAttribute('lang', 'de-DE');
 
     const { findByText } = render(
