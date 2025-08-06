@@ -15,8 +15,12 @@ export default function useLocale({
 }): string | null {
   const documentLocale = useDocumentLocale();
 
+  const allSupportedLocales = defaultLocale
+    ? [defaultLocale, ...supportedLocales]
+    : supportedLocales;
+
   if (propsLocale) {
-    const matchingPropsLocale = getMatchingLocale([propsLocale], supportedLocales);
+    const matchingPropsLocale = getMatchingLocale([propsLocale], allSupportedLocales);
 
     if (matchingPropsLocale) {
       return matchingPropsLocale;
@@ -24,7 +28,7 @@ export default function useLocale({
   }
 
   if (documentLocale) {
-    const matchingDocumentLocale = getMatchingLocale([documentLocale], supportedLocales);
+    const matchingDocumentLocale = getMatchingLocale([documentLocale], allSupportedLocales);
 
     if (matchingDocumentLocale) {
       return matchingDocumentLocale;
@@ -32,7 +36,7 @@ export default function useLocale({
   }
 
   const userLocales = getUserLocales();
-  const matchingUserLocale = getMatchingLocale(userLocales, supportedLocales);
+  const matchingUserLocale = getMatchingLocale(userLocales, allSupportedLocales);
 
   if (matchingUserLocale) {
     return matchingUserLocale;

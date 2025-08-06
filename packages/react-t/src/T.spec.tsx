@@ -185,6 +185,21 @@ describe('<T /> component', () => {
     expect(getByText('Hello world!')).toBeInTheDocument();
   });
 
+  it('returns original phrase if html lang equal to default language is given even if matching browser language is given', async () => {
+    document.documentElement.setAttribute('lang', 'en-US');
+
+    const languageGetter = vi.spyOn(window.navigator, 'language', 'get');
+    languageGetter.mockReturnValue('de-DE');
+
+    const { getByText } = render(
+      <TProvider defaultLocale="en-US" languageFiles={languageFiles}>
+        <T>Hello world!</T>
+      </TProvider>,
+    );
+
+    expect(getByText('Hello world!')).toBeInTheDocument();
+  });
+
   it('returns original phrase if language file is still loading', async () => {
     document.documentElement.setAttribute('lang', 'de-DE');
 
@@ -364,6 +379,9 @@ describe('<T /> component', () => {
   it('changes translated phrase if html lang is changed to value equal to default language', async () => {
     document.documentElement.setAttribute('lang', 'de-DE');
 
+    const languageGetter = vi.spyOn(window.navigator, 'language', 'get');
+    languageGetter.mockReturnValue('en-US');
+
     const { findByText } = render(
       <TProvider languageFiles={asyncLanguageFiles}>
         <T>Hello world!</T>
@@ -425,6 +443,19 @@ describe('<T /> component', () => {
     expect(getByText('Hello world!')).toBeInTheDocument();
 
     restoreConsole();
+  });
+
+  it('returns original phrase if locale prop equal to default language is given even if matching browser language is given', async () => {
+    const languageGetter = vi.spyOn(window.navigator, 'language', 'get');
+    languageGetter.mockReturnValue('de-DE');
+
+    const { getByText } = render(
+      <TProvider defaultLocale="en-US" languageFiles={languageFiles} locale="en-US">
+        <T>Hello world!</T>
+      </TProvider>,
+    );
+
+    expect(getByText('Hello world!')).toBeInTheDocument();
   });
 
   it('returns translated phrase if locale prop is given', async () => {
