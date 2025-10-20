@@ -30,6 +30,6 @@
     "@types/styled-components": "^5.1.26",
     "@vitejs/plugin-react": "^4.6.0",
     "typescript": "^5.9.2",
-    "vite": "^7.1.5"
+    "vite": "^7.1.11"
   }
 }
