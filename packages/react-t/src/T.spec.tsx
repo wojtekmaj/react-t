@@ -1,6 +1,8 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { act, render } from '@testing-library/react';
+import { page } from 'vitest/browser';
+import { render } from 'vitest-browser-react';
 import { Suspense } from 'react';
+import { act } from 'react-dom/test-utils';
 import { getUserLocales } from 'get-user-locale';
 
 import T from './T.js';
@@ -80,16 +82,18 @@ describe('<T /> component', () => {
     vi.clearAllMocks();
   });
 
-  it('throws when rendered without TProvider context', () => {
+  it('throws when rendered without TProvider context', async () => {
     muteConsole();
 
-    expect(() => render(<T>Hello world!</T>)).toThrowError();
+    await expect(render(<T>Hello world!</T>)).rejects.toThrowError(
+      'Invariant failed: Unable to find TProvider context. Did you wrap your app in <TProvider />?',
+    );
 
     restoreConsole();
   });
 
-  it('renders nothing given nothing', () => {
-    const { container } = render(
+  it('renders nothing given nothing', async () => {
+    const { container } = await render(
       <TProvider>
         <T />
       </TProvider>,
@@ -98,28 +102,28 @@ describe('<T /> component', () => {
     expect(container.firstChild).toBe(null);
   });
 
-  it('returns original phrase given no language files', () => {
-    const { getByText } = render(
+  it('returns original phrase given no language files', async () => {
+    await render(
       <TProvider>
         <T>Hello world!</T>
       </TProvider>,
     );
 
-    expect(getByText('Hello world!')).toBeInTheDocument();
+    expect(page.getByText('Hello world!')).toBeInTheDocument();
   });
 
-  it('returns original phrase with variable given no language files', () => {
-    const { getByText } = render(
+  it('returns original phrase with variable given no language files', async () => {
+    await render(
       <TProvider>
         <T name="John">{'Hello {name}!'}</T>
       </TProvider>,
     );
 
-    expect(getByText('Hello John!')).toBeInTheDocument();
+    expect(page.getByText('Hello John!')).toBeInTheDocument();
   });
 
-  it('returns original phrase with ReactNode variable given no language files', () => {
-    const { container } = render(
+  it('returns original phrase with ReactNode variable given no language files', async () => {
+    const { container } = await render(
       <TProvider>
         <T name={<strong>John</strong>}>{'Hello {name}!'}</T>
       </TProvider>,
@@ -128,18 +132,18 @@ describe('<T /> component', () => {
     expect(container).toMatchSnapshot();
   });
 
-  it('returns original phrase with variable placeholder given no language files and no args', () => {
-    const { getByText } = render(
+  it('returns original phrase with variable placeholder given no language files and no args', async () => {
+    await render(
       <TProvider>
         <T>{'Hello {name}!'}</T>
       </TProvider>,
     );
 
-    expect(getByText('Hello {name}!')).toBeInTheDocument();
+    expect(page.getByText('Hello {name}!')).toBeInTheDocument();
   });
 
-  it('returns original phrase with multiple variables given no language files', () => {
-    const { getByText } = render(
+  it('returns original phrase with multiple variables given no language files', async () => {
+    await render(
       <TProvider>
         <T name="John" other="Elisabeth">
           {'Hello {name} and {other}!'}
@@ -147,31 +151,31 @@ describe('<T /> component', () => {
       </TProvider>,
     );
 
-    expect(getByText('Hello John and Elisabeth!')).toBeInTheDocument();
+    expect(page.getByText('Hello John and Elisabeth!')).toBeInTheDocument();
   });
 
-  it('returns original phrase with one variable used multiple times given no language files', () => {
-    const { getByText } = render(
+  it('returns original phrase with one variable used multiple times given no language files', async () => {
+    await render(
       <TProvider>
         <T name="John">{'Hello {name}! Nice to meet you {name}!'}</T>
       </TProvider>,
     );
 
-    expect(getByText('Hello John! Nice to meet you John!')).toBeInTheDocument();
+    expect(page.getByText('Hello John! Nice to meet you John!')).toBeInTheDocument();
   });
 
-  it('returns original phrase if html lang is given but no languageFiles were given', () => {
+  it('returns original phrase if html lang is given but no languageFiles were given', async () => {
     muteConsole();
 
     document.documentElement.setAttribute('lang', 'de-DE');
 
-    const { getByText } = render(
+    await render(
       <TProvider>
         <T>Hello world!</T>
       </TProvider>,
     );
 
-    expect(getByText('Hello world!')).toBeInTheDocument();
+    expect(page.getByText('Hello world!')).toBeInTheDocument();
 
     restoreConsole();
   });
@@ -179,13 +183,13 @@ describe('<T /> component', () => {
   it('returns original phrase if html lang equal to default language is given', async () => {
     document.documentElement.setAttribute('lang', 'en-US');
 
-    const { getByText } = render(
+    await render(
       <TProvider languageFiles={languageFiles}>
         <T>Hello world!</T>
       </TProvider>,
     );
 
-    expect(getByText('Hello world!')).toBeInTheDocument();
+    expect(page.getByText('Hello world!')).toBeInTheDocument();
   });
 
   it('returns original phrase if html lang equal to default language is given even if matching browser language is given', async () => {
@@ -194,31 +198,31 @@ describe('<T /> component', () => {
     const languageGetter = vi.spyOn(window.navigator, 'language', 'get');
     languageGetter.mockReturnValue('de-DE');
 
-    const { getByText } = render(
+    await render(
       <TProvider defaultLocale="en-US" languageFiles={languageFiles}>
         <T>Hello world!</T>
       </TProvider>,
     );
 
-    expect(getByText('Hello world!')).toBeInTheDocument();
+    expect(page.getByText('Hello world!')).toBeInTheDocument();
   });
 
-  it('returns original phrase if language file is still loading', async () => {
+  it('returns original phrase if language file is still loading', () => {
     document.documentElement.setAttribute('lang', 'de-DE');
 
-    const { getByText } = render(
+    render(
       <TProvider languageFiles={asyncLanguageFiles}>
         <T>Hello world!</T>
       </TProvider>,
     );
 
-    expect(getByText('Hello world!')).toBeInTheDocument();
+    expect(page.getByText('Hello world!')).toBeInTheDocument();
   });
 
   it('triggers Suspense if language file is still loading given suspend = true', async () => {
     document.documentElement.setAttribute('lang', 'de-DE');
 
-    const { getByText } = render(
+    await render(
       <Suspense fallback={<div>Loading…</div>}>
         <TProvider languageFiles={delayedLanguageFiles} suspend>
           <T>Hello world!</T>
@@ -226,37 +230,37 @@ describe('<T /> component', () => {
       </Suspense>,
     );
 
-    expect(getByText('Loading…')).toBeInTheDocument();
+    expect(page.getByText('Loading…')).toBeInTheDocument();
   });
 
   it('returns translated phrase if html lang is given and language files are given', async () => {
     document.documentElement.setAttribute('lang', 'de-DE');
 
-    const { getByText } = render(
+    await render(
       <TProvider languageFiles={languageFiles}>
         <T>Hello world!</T>
       </TProvider>,
     );
 
-    expect(getByText('Hallo Welt!')).toBeInTheDocument();
+    expect(page.getByText('Hallo Welt!')).toBeInTheDocument();
   });
 
-  it('returns translated phrase with variable if locale prop is given', () => {
+  it('returns translated phrase with variable if locale prop is given', async () => {
     document.documentElement.setAttribute('lang', 'de-DE');
 
-    const { getByText } = render(
+    await render(
       <TProvider languageFiles={languageFiles}>
         <T name="John">{'Hello {name}!'}</T>
       </TProvider>,
     );
 
-    expect(getByText('Hallo John!')).toBeInTheDocument();
+    expect(page.getByText('Hallo John!')).toBeInTheDocument();
   });
 
   it('returns translated phrases with lang overwritten by the second TProvider', async () => {
     document.documentElement.setAttribute('lang', 'de-DE');
 
-    const { getByText } = render(
+    await render(
       <TProvider languageFiles={languageFiles}>
         <p>
           <T>Hello world!</T>
@@ -269,14 +273,14 @@ describe('<T /> component', () => {
       </TProvider>,
     );
 
-    expect(getByText('Hallo Welt!')).toBeInTheDocument();
-    expect(getByText('¡Hola Mundo!')).toBeInTheDocument();
+    expect(page.getByText('Hallo Welt!')).toBeInTheDocument();
+    expect(page.getByText('¡Hola Mundo!')).toBeInTheDocument();
   });
 
-  it('returns translated phrase with ReactNode variable if locale prop is given', () => {
+  it('returns translated phrase with ReactNode variable if locale prop is given', async () => {
     document.documentElement.setAttribute('lang', 'de-DE');
 
-    const { container } = render(
+    const { container } = await render(
       <TProvider languageFiles={languageFiles}>
         <T name={<strong>John</strong>}>{'Hello {name}!'}</T>
       </TProvider>,
@@ -285,22 +289,22 @@ describe('<T /> component', () => {
     expect(container).toMatchSnapshot();
   });
 
-  it('returns translated phrase with variable placeholder if locale prop is given given no args', () => {
+  it('returns translated phrase with variable placeholder if locale prop is given given no args', async () => {
     document.documentElement.setAttribute('lang', 'de-DE');
 
-    const { getByText } = render(
+    await render(
       <TProvider languageFiles={languageFiles}>
         <T>{'Hello {name}!'}</T>
       </TProvider>,
     );
 
-    expect(getByText('Hallo {name}!')).toBeInTheDocument();
+    expect(page.getByText('Hallo {name}!')).toBeInTheDocument();
   });
 
-  it('returns translated phrase with multiple variables if locale prop is given', () => {
+  it('returns translated phrase with multiple variables if locale prop is given', async () => {
     document.documentElement.setAttribute('lang', 'de-DE');
 
-    const { getByText } = render(
+    await render(
       <TProvider languageFiles={languageFiles}>
         <T name="John" other="Elisabeth">
           {'Hello {name} and {other}!'}
@@ -308,13 +312,13 @@ describe('<T /> component', () => {
       </TProvider>,
     );
 
-    expect(getByText('Hallo John und Elisabeth!')).toBeInTheDocument();
+    expect(page.getByText('Hallo John und Elisabeth!')).toBeInTheDocument();
   });
 
-  it('returns translated phrase with one variable used multiple times if locale prop is given', () => {
+  it('returns translated phrase with one variable used multiple times if locale prop is given', async () => {
     document.documentElement.setAttribute('lang', 'de-DE');
 
-    const { getByText } = render(
+    await render(
       <TProvider languageFiles={languageFiles}>
         <T name="John" other="Elisabeth">
           {'Hello {name}! Nice to meet you {name}!'}
@@ -322,61 +326,61 @@ describe('<T /> component', () => {
       </TProvider>,
     );
 
-    expect(getByText('Hallo John! Schön, dich zu treffen John!')).toBeInTheDocument();
+    expect(page.getByText('Hallo John! Schön, dich zu treffen John!')).toBeInTheDocument();
   });
 
   it('returns translated phrase if html lang is given and synchronous functions returning language files are given', async () => {
     document.documentElement.setAttribute('lang', 'de-DE');
 
-    const { findByText } = render(
+    await render(
       <TProvider languageFiles={syncLanguageFiles}>
         <T>Hello world!</T>
       </TProvider>,
     );
 
-    expect(await findByText('Hallo Welt!')).toBeInTheDocument();
+    await expect.element(page.getByText('Hallo Welt!')).toBeInTheDocument();
   });
 
   it('returns translated phrase if html lang is given and asynchronous functions returning language files are given', async () => {
     document.documentElement.setAttribute('lang', 'de-DE');
 
-    const { findByText } = render(
+    await render(
       <TProvider languageFiles={asyncLanguageFiles}>
         <T>Hello world!</T>
       </TProvider>,
     );
 
-    expect(await findByText('Hallo Welt!')).toBeInTheDocument();
+    await expect.element(page.getByText('Hallo Welt!')).toBeInTheDocument();
   });
 
   it('returns translated phrase if html lang is given and asynchronous functions returning language files as ESM modules are given', async () => {
     document.documentElement.setAttribute('lang', 'de-DE');
 
-    const { findByText } = render(
+    await render(
       <TProvider languageFiles={asyncLanguageFilesEsm}>
         <T>Hello world!</T>
       </TProvider>,
     );
 
-    expect(await findByText('Hallo Welt!')).toBeInTheDocument();
+    await expect.element(page.getByText('Hallo Welt!')).toBeInTheDocument();
   });
 
   it('changes translated phrase if html lang is changed', async () => {
     document.documentElement.setAttribute('lang', 'de-DE');
 
-    const { findByText } = render(
+    await render(
       <TProvider languageFiles={asyncLanguageFiles}>
         <T>Hello world!</T>
       </TProvider>,
     );
 
-    expect(await findByText('Hallo Welt!')).toBeInTheDocument();
+    await expect.element(page.getByText('Hallo Welt!')).toBeInTheDocument();
 
     act(() => {
       document.documentElement.setAttribute('lang', 'es-ES');
     });
 
-    expect(await findByText('¡Hola Mundo!')).toBeInTheDocument();
+    await expect.element(page.getByText('¡Hola Mundo!')).toBeInTheDocument();
   });
 
   it('changes translated phrase if html lang is changed to value equal to default language', async () => {
@@ -385,34 +389,34 @@ describe('<T /> component', () => {
     const languageGetter = vi.spyOn(window.navigator, 'language', 'get');
     languageGetter.mockReturnValue('en-US');
 
-    const { findByText } = render(
+    await render(
       <TProvider languageFiles={asyncLanguageFiles}>
         <T>Hello world!</T>
       </TProvider>,
     );
 
-    expect(await findByText('Hallo Welt!')).toBeInTheDocument();
+    await expect.element(page.getByText('Hallo Welt!')).toBeInTheDocument();
 
     act(() => {
       document.documentElement.setAttribute('lang', 'en-US');
     });
 
-    expect(await findByText('Hello world!')).toBeInTheDocument();
+    await expect.element(page.getByText('Hello world!')).toBeInTheDocument();
   });
 
-  it('returns original phrase if browser language is given but no languageFiles were given', () => {
+  it('returns original phrase if browser language is given but no languageFiles were given', async () => {
     muteConsole();
 
     const languageGetter = vi.spyOn(window.navigator, 'language', 'get');
     languageGetter.mockReturnValue('de-DE');
 
-    const { getByText } = render(
+    await render(
       <TProvider>
         <T>Hello world!</T>
       </TProvider>,
     );
 
-    expect(getByText('Hello world!')).toBeInTheDocument();
+    expect(page.getByText('Hello world!')).toBeInTheDocument();
 
     languageGetter.mockRestore();
 
@@ -423,27 +427,27 @@ describe('<T /> component', () => {
     const languageGetter = vi.spyOn(window.navigator, 'language', 'get');
     languageGetter.mockReturnValue('de-DE');
 
-    const { findByText } = render(
+    await render(
       <TProvider languageFiles={asyncLanguageFiles}>
         <T>Hello world!</T>
       </TProvider>,
     );
 
-    expect(await findByText('Hallo Welt!')).toBeInTheDocument();
+    await expect.element(page.getByText('Hallo Welt!')).toBeInTheDocument();
 
     languageGetter.mockRestore();
   });
 
-  it('returns original phrase if locale prop is given but no languageFiles were given', () => {
+  it('returns original phrase if locale prop is given but no languageFiles were given', async () => {
     muteConsole();
 
-    const { getByText } = render(
+    await render(
       <TProvider locale="de-DE">
         <T>Hello world!</T>
       </TProvider>,
     );
 
-    expect(getByText('Hello world!')).toBeInTheDocument();
+    expect(page.getByText('Hello world!')).toBeInTheDocument();
 
     restoreConsole();
   });
@@ -452,34 +456,34 @@ describe('<T /> component', () => {
     const languageGetter = vi.spyOn(window.navigator, 'language', 'get');
     languageGetter.mockReturnValue('de-DE');
 
-    const { getByText } = render(
+    await render(
       <TProvider defaultLocale="en-US" languageFiles={languageFiles} locale="en-US">
         <T>Hello world!</T>
       </TProvider>,
     );
 
-    expect(getByText('Hello world!')).toBeInTheDocument();
+    expect(page.getByText('Hello world!')).toBeInTheDocument();
   });
 
   it('returns translated phrase if locale prop is given', async () => {
-    const { findByText } = render(
+    await render(
       <TProvider languageFiles={asyncLanguageFiles} locale="de-DE">
         <T>Hello world!</T>
       </TProvider>,
     );
 
-    expect(await findByText('Hallo Welt!')).toBeInTheDocument();
+    await expect.element(page.getByText('Hallo Welt!')).toBeInTheDocument();
   });
 
   it('returns empty string if the translated phrase is an empty string', async () => {
-    const { findByText, queryByText } = render(
+    await render(
       <TProvider languageFiles={{ 'de-DE': { foo: 'foo', bar: '' } }} locale="de-DE">
         <T>foo</T>
         <T>bar</T>
       </TProvider>,
     );
 
-    expect(await findByText('foo')).toBeInTheDocument();
-    expect(queryByText('bar')).not.toBeInTheDocument();
+    await expect.element(page.getByText('foo')).toBeInTheDocument();
+    await expect.element(page.getByText('bar')).not.toBeInTheDocument();
   });
 });

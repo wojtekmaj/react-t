@@ -1,5 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { act, renderHook, waitFor } from '@testing-library/react';
+import { renderHook } from 'vitest-browser-react';
+import { act } from 'react-dom/test-utils';
 import { getUserLocales } from 'get-user-locale';
 
 import TProvider from './TProvider.js';
@@ -61,36 +62,40 @@ describe('useTranslation() hook', () => {
     document.documentElement.removeAttribute('lang');
   });
 
-  it('throws when rendered without TProvider context', () => {
+  it('throws when rendered without TProvider context', async () => {
     muteConsole();
 
-    expect(() => renderHook(() => useTranslation('Hello world!'))).toThrowError();
+    await expect(renderHook(() => useTranslation('Hello world!'))).rejects.toThrowError(
+      'Invariant failed: Unable to find TProvider context. Did you wrap your app in <TProvider />',
+    );
 
     restoreConsole();
   });
 
-  it('renders nothing given nothing', () => {
-    const { result } = renderHook(() => useTranslation(), { wrapper: TProvider });
+  it('renders nothing given nothing', async () => {
+    const { result } = await renderHook(() => useTranslation(), { wrapper: TProvider });
 
     expect(result.current).toBe(undefined);
   });
 
-  it('returns original phrase given no language files', () => {
-    const { result } = renderHook(() => useTranslation('Hello world!'), { wrapper: TProvider });
+  it('returns original phrase given no language files', async () => {
+    const { result } = await renderHook(() => useTranslation('Hello world!'), {
+      wrapper: TProvider,
+    });
 
     expect(result.current).toBe('Hello world!');
   });
 
-  it('returns original phrase with variable given no language files', () => {
-    const { result } = renderHook(() => useTranslation('Hello {name}!', { name: 'John' }), {
+  it('returns original phrase with variable given no language files', async () => {
+    const { result } = await renderHook(() => useTranslation('Hello {name}!', { name: 'John' }), {
       wrapper: TProvider,
     });
 
     expect(result.current).toBe('Hello John!');
   });
 
-  it('returns original phrase with ReactNode variable given no language files', () => {
-    const { result } = renderHook(
+  it('returns original phrase with ReactNode variable given no language files', async () => {
+    const { result } = await renderHook(
       () => useTranslation('Hello {name}!', { name: <strong>John</strong> }),
       { wrapper: TProvider },
     );
@@ -98,14 +103,16 @@ describe('useTranslation() hook', () => {
     expect(result.current).toMatchSnapshot();
   });
 
-  it('returns original phrase with variable placeholder given no language files and no args', () => {
-    const { result } = renderHook(() => useTranslation('Hello {name}!'), { wrapper: TProvider });
+  it('returns original phrase with variable placeholder given no language files and no args', async () => {
+    const { result } = await renderHook(() => useTranslation('Hello {name}!'), {
+      wrapper: TProvider,
+    });
 
     expect(result.current).toBe('Hello {name}!');
   });
 
-  it('returns original phrase with multiple variables given no language files', () => {
-    const { result } = renderHook(
+  it('returns original phrase with multiple variables given no language files', async () => {
+    const { result } = await renderHook(
       () => useTranslation('Hello {name} and {other}!', { name: 'John', other: 'Elisabeth' }),
       { wrapper: TProvider },
     );
@@ -113,8 +120,8 @@ describe('useTranslation() hook', () => {
     expect(result.current).toBe('Hello John and Elisabeth!');
   });
 
-  it('returns original phrase with one variable used multiple times given no language files', () => {
-    const { result } = renderHook(
+  it('returns original phrase with one variable used multiple times given no language files', async () => {
+    const { result } = await renderHook(
       () => useTranslation('Hello {name}! Nice to meet you {name}!', { name: 'John' }),
       { wrapper: TProvider },
     );
@@ -122,12 +129,14 @@ describe('useTranslation() hook', () => {
     expect(result.current).toBe('Hello John! Nice to meet you John!');
   });
 
-  it('returns original phrase if html lang is given but no languageFiles were given', () => {
+  it('returns original phrase if html lang is given but no languageFiles were given', async () => {
     muteConsole();
 
     document.documentElement.setAttribute('lang', 'de-DE');
 
-    const { result } = renderHook(() => useTranslation('Hello world!'), { wrapper: TProvider });
+    const { result } = await renderHook(() => useTranslation('Hello world!'), {
+      wrapper: TProvider,
+    });
 
     expect(result.current).toBe('Hello world!');
 
@@ -137,7 +146,7 @@ describe('useTranslation() hook', () => {
   it('returns original phrase if html lang equal to defaultLanguage is given', async () => {
     document.documentElement.setAttribute('lang', 'en-US');
 
-    const { result } = renderHook(() => useTranslation('Hello world!'), {
+    const { result } = await renderHook(() => useTranslation('Hello world!'), {
       wrapper: TProvider,
     });
 
@@ -147,7 +156,7 @@ describe('useTranslation() hook', () => {
   it('returns original phrase if language file is still loading', async () => {
     document.documentElement.setAttribute('lang', 'de-DE');
 
-    const { result } = renderHook(() => useTranslation('Hello world!'), {
+    const { result } = await renderHook(() => useTranslation('Hello world!'), {
       wrapper: TProvider,
     });
 
@@ -161,12 +170,12 @@ describe('useTranslation() hook', () => {
       return <TProvider languageFiles={languageFiles}>{children}</TProvider>;
     }
 
-    const { result } = renderHook(() => useTranslation('Hello world!'), { wrapper });
+    const { result } = await renderHook(() => useTranslation('Hello world!'), { wrapper });
 
     expect(result.current).toBe('Hallo Welt!');
   });
 
-  it('returns translated phrase with variable if locale prop is given', () => {
+  it('returns translated phrase with variable if locale prop is given', async () => {
     document.documentElement.setAttribute('lang', 'de-DE');
 
     function wrapper({ children }: { children: React.ReactNode }) {
@@ -177,7 +186,7 @@ describe('useTranslation() hook', () => {
       );
     }
 
-    const { result } = renderHook(() => useTranslation('Hello {name}!', { name: 'John' }), {
+    const { result } = await renderHook(() => useTranslation('Hello {name}!', { name: 'John' }), {
       wrapper,
     });
 
@@ -195,12 +204,12 @@ describe('useTranslation() hook', () => {
       );
     }
 
-    const { result } = renderHook(() => useTranslation('Hello world!'), { wrapper });
+    const { result } = await renderHook(() => useTranslation('Hello world!'), { wrapper });
 
     expect(result.current).toBe('¡Hola Mundo!');
   });
 
-  it('returns translated phrase with ReactNode variable if locale prop is given', () => {
+  it('returns translated phrase with ReactNode variable if locale prop is given', async () => {
     document.documentElement.setAttribute('lang', 'de-DE');
 
     function wrapper({ children }: { children: React.ReactNode }) {
@@ -211,7 +220,7 @@ describe('useTranslation() hook', () => {
       );
     }
 
-    const { result } = renderHook(
+    const { result } = await renderHook(
       () => useTranslation('Hello {name}!', { name: <strong>John</strong> }),
       { wrapper },
     );
@@ -219,19 +228,19 @@ describe('useTranslation() hook', () => {
     expect(result.current).toMatchSnapshot();
   });
 
-  it('returns translated phrase with variable placeholder if locale prop is given given no args', () => {
+  it('returns translated phrase with variable placeholder if locale prop is given given no args', async () => {
     document.documentElement.setAttribute('lang', 'de-DE');
 
     function wrapper({ children }: { children: React.ReactNode }) {
       return <TProvider languageFiles={languageFiles}>{children}</TProvider>;
     }
 
-    const { result } = renderHook(() => useTranslation('Hello {name}!'), { wrapper });
+    const { result } = await renderHook(() => useTranslation('Hello {name}!'), { wrapper });
 
     expect(result.current).toBe('Hallo {name}!');
   });
 
-  it('returns translated phrase with multiple variables if locale prop is given', () => {
+  it('returns translated phrase with multiple variables if locale prop is given', async () => {
     document.documentElement.setAttribute('lang', 'de-DE');
 
     function wrapper({ children }: { children: React.ReactNode }) {
@@ -242,7 +251,7 @@ describe('useTranslation() hook', () => {
       );
     }
 
-    const { result } = renderHook(
+    const { result } = await renderHook(
       () => useTranslation('Hello {name} and {other}!', { name: 'John', other: 'Elisabeth' }),
       { wrapper },
     );
@@ -250,14 +259,14 @@ describe('useTranslation() hook', () => {
     expect(result.current).toBe('Hallo John und Elisabeth!');
   });
 
-  it('returns translated phrase with one variable used multiple times if locale prop is given', () => {
+  it('returns translated phrase with one variable used multiple times if locale prop is given', async () => {
     document.documentElement.setAttribute('lang', 'de-DE');
 
     function wrapper({ children }: { children: React.ReactNode }) {
       return <TProvider languageFiles={languageFiles}>{children}</TProvider>;
     }
 
-    const { result } = renderHook(
+    const { result } = await renderHook(
       () => useTranslation('Hello {name}! Nice to meet you {name}!', { name: 'John' }),
       { wrapper },
     );
@@ -272,7 +281,7 @@ describe('useTranslation() hook', () => {
       return <TProvider languageFiles={syncLanguageFiles}>{children}</TProvider>;
     }
 
-    const { result } = renderHook(() => useTranslation('Hello world!'), { wrapper });
+    const { result } = await renderHook(() => useTranslation('Hello world!'), { wrapper });
 
     expect(result.current).toBe('Hallo Welt!');
   });
@@ -284,9 +293,9 @@ describe('useTranslation() hook', () => {
       return <TProvider languageFiles={asyncLanguageFiles}>{children}</TProvider>;
     }
 
-    const { result } = renderHook(() => useTranslation('Hello world!'), { wrapper });
+    const { result } = await renderHook(() => useTranslation('Hello world!'), { wrapper });
 
-    await waitFor(() => expect(result.current).toBe('Hallo Welt!'));
+    await vi.waitFor(() => expect(result.current).toBe('Hallo Welt!'));
   });
 
   it('returns translated phrase if html lang is given and asynchronous functions returning language files as ESM modules are given', async () => {
@@ -296,9 +305,9 @@ describe('useTranslation() hook', () => {
       return <TProvider languageFiles={asyncLanguageFilesEsm}>{children}</TProvider>;
     }
 
-    const { result } = renderHook(() => useTranslation('Hello world!'), { wrapper });
+    const { result } = await renderHook(() => useTranslation('Hello world!'), { wrapper });
 
-    await waitFor(() => expect(result.current).toBe('Hallo Welt!'));
+    await vi.waitFor(() => expect(result.current).toBe('Hallo Welt!'));
   });
 
   it('changes translated phrase if html lang is changed', async () => {
@@ -308,19 +317,19 @@ describe('useTranslation() hook', () => {
       return <TProvider languageFiles={asyncLanguageFiles}>{children}</TProvider>;
     }
 
-    const { rerender, result } = renderHook(() => useTranslation('Hello world!'), {
+    const { rerender, result } = await renderHook(() => useTranslation('Hello world!'), {
       wrapper,
     });
 
-    await waitFor(() => expect(result.current).toBe('Hallo Welt!'));
+    await vi.waitFor(() => expect(result.current).toBe('Hallo Welt!'));
 
     act(() => {
       document.documentElement.setAttribute('lang', 'es-ES');
     });
 
-    rerender();
+    await rerender();
 
-    await waitFor(() => expect(result.current).toBe('¡Hola Mundo!'));
+    await vi.waitFor(() => expect(result.current).toBe('¡Hola Mundo!'));
   });
 
   it('changes translated phrase if html lang is changed to value equal to defaultLanguage', async () => {
@@ -330,28 +339,30 @@ describe('useTranslation() hook', () => {
       return <TProvider languageFiles={asyncLanguageFiles}>{children}</TProvider>;
     }
 
-    const { rerender, result } = renderHook(() => useTranslation('Hello world!'), {
+    const { rerender, result } = await renderHook(() => useTranslation('Hello world!'), {
       wrapper,
     });
 
-    await waitFor(() => expect(result.current).toBe('Hallo Welt!'));
+    await vi.waitFor(() => expect(result.current).toBe('Hallo Welt!'));
 
     act(() => {
       document.documentElement.setAttribute('lang', 'en-US');
     });
 
-    rerender();
+    await rerender();
 
-    await waitFor(() => expect(result.current).toBe('Hello world!'));
+    await vi.waitFor(() => expect(result.current).toBe('Hello world!'));
   });
 
-  it('returns original phrase if browser language is given but no languageFiles were given', () => {
+  it('returns original phrase if browser language is given but no languageFiles were given', async () => {
     muteConsole();
 
     const languageGetter = vi.spyOn(window.navigator, 'language', 'get');
     languageGetter.mockReturnValue('de-DE');
 
-    const { result } = renderHook(() => useTranslation('Hello world!'), { wrapper: TProvider });
+    const { result } = await renderHook(() => useTranslation('Hello world!'), {
+      wrapper: TProvider,
+    });
 
     expect(result.current).toBe('Hello world!');
 
@@ -368,21 +379,21 @@ describe('useTranslation() hook', () => {
       return <TProvider languageFiles={asyncLanguageFiles}>{children}</TProvider>;
     }
 
-    const { result } = renderHook(() => useTranslation('Hello world!'), { wrapper });
+    const { result } = await renderHook(() => useTranslation('Hello world!'), { wrapper });
 
-    await waitFor(() => expect(result.current).toBe('Hallo Welt!'));
+    await vi.waitFor(() => expect(result.current).toBe('Hallo Welt!'));
 
     languageGetter.mockRestore();
   });
 
-  it('returns original phrase if locale prop is given but no languageFiles were given', () => {
+  it('returns original phrase if locale prop is given but no languageFiles were given', async () => {
     muteConsole();
 
     function wrapper({ children }: { children: React.ReactNode }) {
       return <TProvider locale="de-DE">{children}</TProvider>;
     }
 
-    const { result } = renderHook(() => useTranslation('Hello world!'), { wrapper });
+    const { result } = await renderHook(() => useTranslation('Hello world!'), { wrapper });
 
     expect(result.current).toBe('Hello world!');
 
@@ -398,9 +409,9 @@ describe('useTranslation() hook', () => {
       );
     }
 
-    const { result } = renderHook(() => useTranslation('Hello world!'), { wrapper });
+    const { result } = await renderHook(() => useTranslation('Hello world!'), { wrapper });
 
-    await waitFor(() => expect(result.current).toBe('Hallo Welt!'));
+    await vi.waitFor(() => expect(result.current).toBe('Hallo Welt!'));
   });
 
   it('returns empty string if the translated phrase is an empty string', async () => {
@@ -412,8 +423,8 @@ describe('useTranslation() hook', () => {
       );
     }
 
-    const { result } = renderHook(() => useTranslation('bar'), { wrapper });
+    const { result } = await renderHook(() => useTranslation('bar'), { wrapper });
 
-    await waitFor(() => expect(result.current).toBe(''));
+    await vi.waitFor(() => expect(result.current).toBe(''));
   });
 });
