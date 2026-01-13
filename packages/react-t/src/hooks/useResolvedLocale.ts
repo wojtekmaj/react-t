@@ -4,7 +4,7 @@ import useDocumentLocale from './useDocumentLocale.js';
 
 import { getMatchingLocale } from '../utils/locale.js';
 
-export default function useLocale({
+export default function useResolvedLocale({
   defaultLocale,
   propsLocale,
   supportedLocales,

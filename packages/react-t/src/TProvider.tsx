@@ -2,7 +2,7 @@ import { useContext, useRef } from 'react';
 
 import TContext from './TContext.js';
 
-import useLocale from './hooks/useLocale.js';
+import useResolvedLocale from './hooks/useResolvedLocale.js';
 
 import type { LanguageFiles } from './shared/types.js';
 
@@ -38,7 +38,7 @@ export default function TProvider<T extends LanguageFiles>(
 
   const supportedLocales = languageFiles ? Object.keys(languageFiles) : [];
 
-  const locale = useLocale({ defaultLocale, propsLocale, supportedLocales });
+  const locale = useResolvedLocale({ defaultLocale, propsLocale, supportedLocales });
 
   return (
     <TContext.Provider
