@@ -135,6 +135,14 @@ If necessary, you may use variables like so:
 <T name={name}>{'Hello, {name}'}</T>
 ```
 
+### Usage of the `useLocale` hook
+
+You can get current locale using `useLocale` hook:
+
+```ts
+const locale = useLocale();
+```
+
 ### Usage of the `useTranslation` hook
 
 Define translatable string in the code using `useTranslation` hook:
