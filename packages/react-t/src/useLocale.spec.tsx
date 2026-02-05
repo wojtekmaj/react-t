@@ -3,6 +3,7 @@ import { renderHook } from 'vitest-browser-react';
 import { getUserLocales } from 'get-user-locale';
 
 import TProvider from './TProvider.js';
+
 import useLocale from './useLocale.js';
 
 import { muteConsole, restoreConsole } from '../../../test-utils.js';
