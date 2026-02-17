@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { renderHook } from 'vitest-browser-react';
-import { act } from 'react-dom/test-utils';
+import { act } from 'react';
 import { getUserLocales } from 'get-user-locale';
 
 import TProvider from './TProvider.js';

@@ -1,8 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { page } from 'vitest/browser';
 import { render } from 'vitest-browser-react';
-import { Suspense } from 'react';
-import { act } from 'react-dom/test-utils';
+import { act, Suspense } from 'react';
 import { getUserLocales } from 'get-user-locale';
 
 import T from './T.js';
