@@ -5,6 +5,7 @@
     "isolatedDeclarations": true,
     "isolatedModules": true,
     "jsx": "react-jsx",
+    "lib": ["dom", "esnext"],
     "module": "nodenext",
     "moduleDetection": "force",
     "noEmit": true,
