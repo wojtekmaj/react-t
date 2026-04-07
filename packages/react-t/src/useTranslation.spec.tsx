@@ -40,6 +40,11 @@ const asyncLanguageFiles: Record<string, () => Promise<LanguageFile>> = {
   'es-ES': () => new Promise((resolve) => resolve(esLanguageFile)),
 };
 
+const asyncLanguageFilesThatNeverResolve: Record<string, () => Promise<LanguageFile>> = {
+  'de-DE': () => new Promise(() => {}),
+  'es-ES': () => new Promise(() => {}),
+};
+
 const asyncLanguageFilesEsm: Record<string, () => Promise<LanguageFileModule>> = {
   'de-DE': () => new Promise((resolve) => resolve({ default: deLanguageFile })),
   'es-ES': () => new Promise((resolve) => resolve({ default: esLanguageFile })),
@@ -156,9 +161,11 @@ describe('useTranslation() hook', () => {
   it('returns original phrase if language file is still loading', async () => {
     document.documentElement.setAttribute('lang', 'de-DE');
 
-    const { result } = await renderHook(() => useTranslation('Hello world!'), {
-      wrapper: TProvider,
-    });
+    function wrapper({ children }: { children: React.ReactNode }) {
+      return <TProvider languageFiles={asyncLanguageFilesThatNeverResolve}>{children}</TProvider>;
+    }
+
+    const { result } = await renderHook(() => useTranslation('Hello world!'), { wrapper });
 
     expect(result.current).toBe('Hello world!');
   });

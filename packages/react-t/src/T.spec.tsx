@@ -44,6 +44,11 @@ const asyncLanguageFiles: Record<string, () => Promise<LanguageFile>> = {
   'es-ES': () => new Promise((resolve) => resolve(esLanguageFile)),
 };
 
+const asyncLanguageFilesThatNeverResolve: Record<string, () => Promise<LanguageFile>> = {
+  'de-DE': () => new Promise(() => {}),
+  'es-ES': () => new Promise(() => {}),
+};
+
 const asyncLanguageFilesEsm: Record<string, () => Promise<LanguageFileModule>> = {
   'de-DE': () => new Promise((resolve) => resolve({ default: deLanguageFile })),
   'es-ES': () => new Promise((resolve) => resolve({ default: esLanguageFile })),
@@ -206,11 +211,11 @@ describe('<T /> component', () => {
     expect(page.getByText('Hello world!')).toBeInTheDocument();
   });
 
-  it('returns original phrase if language file is still loading', () => {
+  it('returns original phrase if language file is still loading', async () => {
     document.documentElement.setAttribute('lang', 'de-DE');
 
-    render(
-      <TProvider languageFiles={asyncLanguageFiles}>
+    await render(
+      <TProvider languageFiles={asyncLanguageFilesThatNeverResolve}>
         <T>Hello world!</T>
       </TProvider>,
     );
