@@ -18,7 +18,7 @@ export default function useDocumentLocale(): string | null {
     setDocumentLocale(nextLocale);
   }, []);
 
-  useEffect(onLangAttributeChange, []);
+  useEffect(onLangAttributeChange, [onLangAttributeChange]);
 
   useMutationObserver(
     isBrowser ? document.documentElement : null,
