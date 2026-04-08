@@ -6,7 +6,6 @@ import useTranslation from './useTranslation.js';
 
 export type { TProps } from './T.js';
 export type { TProviderProps } from './TProvider.js';
-
-export { useLocale, useTranslation, TProvider, T };
+export { T, TProvider, useLocale, useTranslation };
 
 export default T;

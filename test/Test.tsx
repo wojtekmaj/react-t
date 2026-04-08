@@ -1,13 +1,13 @@
 import { Suspense, useEffect, useState } from 'react';
-import T, { TProvider, useTranslation } from '@wojtekmaj/react-t';
 import { useTick } from '@wojtekmaj/react-hooks';
+import T, { TProvider, useTranslation } from '@wojtekmaj/react-t';
 
 import LocaleOptions from './LocaleOptions.js';
 import Options from './Options.js';
 
 import './Test.css';
 
-import { languageFiles, delayedLanguageFiles } from './i18n/index.js';
+import { delayedLanguageFiles, languageFiles } from './i18n/index.js';
 
 import type { PassMethod } from './shared/types.js';
 
