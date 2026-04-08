@@ -121,12 +121,10 @@ function useLanguageFileSuspense(getterOrLanguageFile: GetterOrLanguageFile | nu
 }
 
 function useLanguageFileState(getterOrLanguageFile: GetterOrLanguageFile | null) {
-  // biome-ignore lint/correctness/useHookAtTopLevel: We know that suspend will never change
   const [languageFile, setLanguageFile] = useState<LanguageFile | null>(
     resolveLanguageFileSync(getterOrLanguageFile),
   );
 
-  // biome-ignore lint/correctness/useHookAtTopLevel: We know that suspend will never change
   useEffect(() => {
     resolveLanguageFile(getterOrLanguageFile).then(setLanguageFile);
   }, [getterOrLanguageFile]);
