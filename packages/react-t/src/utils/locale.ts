@@ -7,13 +7,13 @@ function altLanguageCode(languageCode: string) {
 function getMatchingSupportedLocale(userLocale: string, supportedLocales: string[]): string | null {
   return (
     supportedLocales.find(
-      (el) =>
-        // First, try and find exact match
-        el === userLocale ||
-        // If not found, try and alter user locale
-        el === altLanguageCode(userLocale) ||
-        // If not found, try and alter supported locale instead
-        altLanguageCode(el) === userLocale,
+      (supportedLocale) =>
+        // First, try and find an exact match
+        supportedLocale === userLocale ||
+        // If not found, try and alter the user locale
+        supportedLocale === altLanguageCode(userLocale) ||
+        // If not found, try and alter the supported locale instead
+        altLanguageCode(supportedLocale) === userLocale,
     ) || null
   );
 }
